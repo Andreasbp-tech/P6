@@ -15,5 +15,11 @@
             "name": "testconnection",
             "connectionTimeout": 30
         }
+    ],
+    "java.project.sourcePaths": [
+        "Bachelorprojekt\\src"
+    ],
+    "java.project.referencedLibraries": [
+        "Bachelorprojekt\\lib\\mysql-connector-j-9.2.0.jar"
     ]
 }
