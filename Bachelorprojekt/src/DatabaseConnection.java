@@ -3,7 +3,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://db.course.hst.aau.dk/db=hst-25-st-6-6402&token=91d85073c119826adfa37cbd1d116ef2";
+    private static final String URL = "jdbc:mysql://db.course.hst.aau.dk/?db=hst-25-st-6-6402";//&token=a55f907f447ea0a01aadabf481ec1363";
     private static final String USER = "hst-25-st-6-6402";
     private static final String PASSWORD = "oadochooyuuthabahkai";
 
