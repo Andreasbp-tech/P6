@@ -3,20 +3,22 @@ import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
-public class AuthenticationScreen {
+public class AuthenticationPage {
     public static void launch() {
-        JFrame frame = new JFrame("Authentication Screen");
+        JFrame frame = new JFrame("ICUview");
         JTextField medarbejderIDField = new JTextField(16);
         medarbejderIDField.setPreferredSize(new Dimension(200, 30)); // Set preferred size
-
+        // Use the universal header pane
+        JPanel headerPanel = HeaderPanelUtil.createHeaderPanel();
+      
         JButton loginButton = new JButton("Login");
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String medarbejderID = medarbejderIDField.getText();
-                if (medarbejderID.length() == 10 && isValidMedarbejderID(medarbejderID)) {
-                    JOptionPane.showMessageDialog(frame, "Login successful!");
-                    // Proceed to the homescreen
+                if (/*medarbejderID.length() == 10 &&*/ isValidMedarbejderID(medarbejderID)) {
+                    ValgStue.launch(); //Hvis login er godkendt, gå til ValgStue
+                    frame.dispose(); // Luk login vinduet
                 } else {
                     JOptionPane.showMessageDialog(frame, "Forkert MedarbejderID!");
                 }
@@ -47,6 +49,7 @@ public class AuthenticationScreen {
         panel.add(loginButton, gbc);
 
         frame.add(panel);
+        frame.add(headerPanel, BorderLayout.NORTH); // Add header panel to the top
         frame.setSize(600, 300); // Set a larger size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
