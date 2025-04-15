@@ -1,5 +1,7 @@
+package view;
 import java.awt.*;
 import javax.swing.*;
+import utilities.HeaderPanelUtil;
 
 public class MainPage {
     public static void launch(int valgtStue) {

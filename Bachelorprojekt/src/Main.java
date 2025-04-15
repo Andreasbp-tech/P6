@@ -1,3 +1,6 @@
+import utilities.DatabaseConnection;
+import view.AuthenticationPage;
+
 public class Main {
     public static void main(String[] args) {
         DatabaseConnection.getConnection(); // Opret forbindelse til databasen

@@ -1,7 +1,11 @@
+package view;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
+
+import utilities.DatabaseConnection;
+import utilities.HeaderPanelUtil;
 
 public class AuthenticationPage {
     public static void launch() {
