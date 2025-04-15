@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class AuthenticationPage {
     public static void launch() {
-        JFrame frame = new JFrame("ICUview");
+        JFrame frame = new JFrame("Login");
         JTextField medarbejderIDField = new JTextField(16);
         medarbejderIDField.setPreferredSize(new Dimension(200, 30)); // Set preferred size
         // Use the universal header pane
@@ -16,20 +16,21 @@ public class AuthenticationPage {
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String medarbejderID = medarbejderIDField.getText();
-                if (/*medarbejderID.length() == 10 &&*/ isValidMedarbejderID(medarbejderID)) {
-                    ValgStue.launch(); //Hvis login er godkendt, gå til ValgStue
-                    frame.dispose(); // Luk login vinduet
+                if (isValidMedarbejderID(medarbejderID)) {
+                    logUserLogin(medarbejderID); // Log the user login
+                    ValgStue.launch(); // If login is approved, go to ValgStue
+                    frame.dispose(); // Close the login window
                 } else {
                     JOptionPane.showMessageDialog(frame, "Forkert MedarbejderID!");
                 }
             }
         });
 
-        //Gør dewt muligt at trykke på ENTER knappen
+        // Enable pressing the ENTER button
         medarbejderIDField.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-            loginButton.doClick(); // Simulate button click
-         }
+            public void actionPerformed(ActionEvent e) {
+                loginButton.doClick(); // Simulate button click
+            }
         });
 
         // Set the layout manager to GridBagLayout for better control over component placement
@@ -68,5 +69,27 @@ public class AuthenticationPage {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    private static void logUserLogin(String medarbejderID) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT Rolle, Efternavn FROM Medarbejdere WHERE MedarbejderID = ?")) {
+            stmt.setString(1, medarbejderID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String rolle = rs.getString("Rolle");
+                String efternavn = rs.getString("Efternavn");
+
+                try (PreparedStatement insertStmt = conn.prepareStatement("INSERT INTO LoginHistorie (MedarbejderID, Rolle, Efternavn, LoginTime) VALUES (?, ?, ?, ?)")) {
+                    insertStmt.setString(1, medarbejderID);
+                    insertStmt.setString(2, rolle);
+                    insertStmt.setString(3, efternavn);
+                    insertStmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+                    insertStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }
