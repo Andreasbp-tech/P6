@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -8,6 +9,8 @@ import utilities.DatabaseConnection;
 import utilities.HeaderPanelUtil;
 
 public class AuthenticationPage {
+    private static String loggedInMedarbejderID;
+
     public static void launch() {
         JFrame frame = new JFrame("Login");
         JTextField medarbejderIDField = new JTextField(16);
@@ -76,6 +79,7 @@ public class AuthenticationPage {
     }
 
     private static void logUserLogin(String medarbejderID) {
+        loggedInMedarbejderID = medarbejderID; // Set the logged-in user ID
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT Rolle, Efternavn FROM Medarbejdere WHERE MedarbejderID = ?")) {
             stmt.setString(1, medarbejderID);
@@ -95,5 +99,9 @@ public class AuthenticationPage {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static String getLoggedInMedarbejderID() {
+        return loggedInMedarbejderID;
     }
 }
