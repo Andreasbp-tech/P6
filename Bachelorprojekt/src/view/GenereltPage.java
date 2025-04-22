@@ -9,87 +9,110 @@ public class GenereltPage {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Generelt Content for Stue " + valgtStue), BorderLayout.CENTER);
 
-        // Panel for buttons
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0); // Add top margin to move the grid down
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        Font buttonFont = new Font("Arial", Font.BOLD, 18); // Fælles font til alle knapper
 
-        Font buttonFont = new Font("Arial", Font.BOLD, 18); // Adjust font size as needed
+        // Første række knapper (Stue, Patient, CPR) – lige store og fylder hele bredden
+        JPanel buttonPanelTop = new JPanel(new GridLayout(1, 3, 10, 0));
+        buttonPanelTop.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JButton stueButton = new JButton("Stue " + valgtStue);
-        stueButton.setFont(buttonFont); // Set font for "Stue" button
-        stueButton.addActionListener(e -> ValgStue.launch()); // Launch ValgStue on click
-        buttonPanel.add(stueButton, gbc);
+        stueButton.setFont(buttonFont);
+        stueButton.addActionListener(e -> ValgStue.launch());
+        buttonPanelTop.add(stueButton);
 
-        gbc.gridx = 1;
         JButton patientButton = new JButton("Patient: " + ValgStue.fornavn + " " + ValgStue.efternavn);
-        patientButton.setFont(buttonFont); // Set font for "Patient" button
-        patientButton.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
-        buttonPanel.add(patientButton, gbc);
+        patientButton.setFont(buttonFont);
+        patientButton.setHorizontalAlignment(SwingConstants.LEFT);
+        buttonPanelTop.add(patientButton);
 
-        gbc.gridx = 2;
         JButton cprButton = new JButton("CPR: " + ValgStue.cprNr);
-        cprButton.setFont(buttonFont); // Set font for "CPR" button
-        cprButton.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
-        buttonPanel.add(cprButton, gbc);
+        cprButton.setFont(buttonFont);
+        cprButton.setHorizontalAlignment(SwingConstants.LEFT);
+        buttonPanelTop.add(cprButton);
 
-        panel.add(buttonPanel, BorderLayout.NORTH);
+        // Anden række knapper
+        JPanel buttonPanelBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        // Add more components and functionality as needed
+        JButton RegistrerParameterButton = new JButton("Registrer parametre");
+        RegistrerParameterButton.setFont(buttonFont);
+        // RegistrerParameterButton.setBackground(Color.GREEN);
+        RegistrerParameterButton.addActionListener(e -> RegistrerParametrePage.launch());
+        buttonPanelBottom.add(RegistrerParameterButton);
+
+        JButton SeOrdinationerButton = new JButton("Se ordinationer");
+        SeOrdinationerButton.setFont(buttonFont);
+        // SeOrdinationerButton.setBackground(Color.GREEN);
+        SeOrdinationerButton.addActionListener(e -> SeOrdinationerPage.launch());
+        buttonPanelBottom.add(SeOrdinationerButton);
+
+        // Kombiner begge rækker i én vertikal container
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
+        topContainer.add(buttonPanelTop);
+        topContainer.add(buttonPanelBottom);
+
+        panel.add(topContainer, BorderLayout.NORTH);
+
         return panel;
     }
-}*/
+}
+*/
 
 package view;
 
 import java.awt.*;
 import javax.swing.*;
-import view.ValgStue;
+import javax.swing.table.DefaultTableModel;
+import view.TabelGenereltPage;
 
 public class GenereltPage {
     public static JPanel createPanel(int valgtStue) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Generelt Content for Stue " + valgtStue), BorderLayout.CENTER);
 
-        // Panel for buttons
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0); // Add top margin to move the grid down
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        Font buttonFont = new Font("Arial", Font.BOLD, 18); // Fælles font til alle knapper
 
-        Font buttonFont = new Font("Arial", Font.BOLD, 18); // Adjust font size as needed
+        // Første række knapper (Stue, Patient, CPR) – lige store og fylder hele bredden
+        JPanel buttonPanelTop = new JPanel(new GridLayout(1, 3, 10, 0));
+        buttonPanelTop.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JButton stueButton = new JButton("Stue " + valgtStue);
-        stueButton.setFont(buttonFont); // Set font for "Stue" button
-        stueButton.addActionListener(e -> ValgStue.launch()); // Launch ValgStue on click
-        buttonPanel.add(stueButton, gbc);
+        stueButton.setFont(buttonFont);
+        stueButton.addActionListener(e -> ValgStue.launch());
+        buttonPanelTop.add(stueButton);
 
-        gbc.gridx = 1;
         JButton patientButton = new JButton("Patient: " + ValgStue.fornavn + " " + ValgStue.efternavn);
-        patientButton.setFont(buttonFont); // Set font for "Patient" button
-        patientButton.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
-        buttonPanel.add(patientButton, gbc);
+        patientButton.setFont(buttonFont);
+        patientButton.setHorizontalAlignment(SwingConstants.LEFT);
+        buttonPanelTop.add(patientButton);
 
-        gbc.gridx = 2;
         JButton cprButton = new JButton("CPR: " + ValgStue.cprNr);
-        cprButton.setFont(buttonFont); // Set font for "CPR" button
-        cprButton.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
-        buttonPanel.add(cprButton, gbc);
+        cprButton.setFont(buttonFont);
+        cprButton.setHorizontalAlignment(SwingConstants.LEFT);
+        buttonPanelTop.add(cprButton);
 
-        // Ensure all buttons have equal width
-        gbc.gridwidth = 1;
-        gbc.weightx = 1.0;
+        // Anden række knapper
+        JPanel buttonPanelBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        panel.add(buttonPanel, BorderLayout.NORTH);
+        JButton RegistrerParameterButton = new JButton("Registrer parametre");
+        RegistrerParameterButton.setFont(buttonFont);
+        RegistrerParameterButton.addActionListener(e -> RegistrerParametrePage.launch());
+        buttonPanelBottom.add(RegistrerParameterButton);
 
-        // Add more components and functionality as needed
+        JButton SeOrdinationerButton = new JButton("Se ordinationer");
+        SeOrdinationerButton.setFont(buttonFont);
+        SeOrdinationerButton.addActionListener(e -> SeOrdinationerPage.launch());
+        buttonPanelBottom.add(SeOrdinationerButton);
+
+        // Kombiner begge rækker i én vertikal container
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
+        topContainer.add(buttonPanelTop);
+        topContainer.add(buttonPanelBottom);
+
+        panel.add(topContainer, BorderLayout.NORTH);
+        panel.add(TabelGenereltPage.tablePanel, BorderLayout.CENTER);
+
         return panel;
     }
 }
