@@ -1,12 +1,18 @@
 package view;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
 
 import utilities.HeaderPanelUtil;
+import utilities.DatabaseConnection;
 
 public class ValgStue {
     private static int valgtStue;
+    public static String fornavn;
+    public static String efternavn;
+    public static String cprNr;
 
     public static void launch() {
         JFrame frame = new JFrame("Vælg stue");
@@ -25,6 +31,7 @@ public class ValgStue {
                 public void actionPerformed(ActionEvent e) {
                     valgtStue = Integer.parseInt(stueButton.getText().split(" ")[1]);
                     frame.dispose(); // Close the selection screen
+                    getPatientData(valgtStue);
                     MainPage.launch(valgtStue); // Open the next screen with the selected Stue
                 }
             });
@@ -33,9 +40,48 @@ public class ValgStue {
         frame.add(buttonsPanel, BorderLayout.CENTER);// Add buttons panel to the center
         frame.add(headerPanel, BorderLayout.NORTH); // Add header panel to the top
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to fill the screen
-        frame.setUndecorated(false); // Remove window decorations (title bar, borders, etc.)        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setUndecorated(false); // Remove window decorations (title bar, borders, etc.)
+                                     // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
         frame.setVisible(true);
+    }
+
+    public static void getPatientData(int valgtStue) {
+        String query = "SELECT Fornavn, Efternavn, CPR_nr FROM Patienter WHERE Stue = ?";
+
+        boolean found = false;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, valgtStue);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                do {
+                    fornavn = rs.getString("Fornavn");
+                    efternavn = rs.getString("Efternavn");
+                    cprNr = rs.getString("CPR_nr");
+
+                    System.out.println("Fornavn: " + fornavn + ", Efternavn: " + efternavn + ", CPR_nr: " + cprNr);
+                    found = true;
+                } while (rs.next());
+            }
+
+            if (!found) {
+                fornavn = " ";
+                efternavn = " ";
+                cprNr = " ";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        int valgtStue = view.ValgStue.getSelectedStue();
+        getPatientData(valgtStue);
     }
 
     public static int getSelectedStue() {
