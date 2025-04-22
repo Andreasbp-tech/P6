@@ -2,7 +2,8 @@
 
 import java.awt.*;
 import javax.swing.*;
-import view.ValgStue;
+import view.TabelBlodproeve;
+import view.TabelAGas;
 
 public class GenereltPage {
     public static JPanel createPanel(int valgtStue) {
@@ -35,13 +36,11 @@ public class GenereltPage {
 
         JButton RegistrerParameterButton = new JButton("Registrer parametre");
         RegistrerParameterButton.setFont(buttonFont);
-        // RegistrerParameterButton.setBackground(Color.GREEN);
         RegistrerParameterButton.addActionListener(e -> RegistrerParametrePage.launch());
         buttonPanelBottom.add(RegistrerParameterButton);
 
         JButton SeOrdinationerButton = new JButton("Se ordinationer");
         SeOrdinationerButton.setFont(buttonFont);
-        // SeOrdinationerButton.setBackground(Color.GREEN);
         SeOrdinationerButton.addActionListener(e -> SeOrdinationerPage.launch());
         buttonPanelBottom.add(SeOrdinationerButton);
 
@@ -52,6 +51,13 @@ public class GenereltPage {
         topContainer.add(buttonPanelBottom);
 
         panel.add(topContainer, BorderLayout.NORTH);
+
+        // Add tables to separate sections
+        JPanel tablePanel = new JPanel(new GridLayout(2, 1));
+        tablePanel.add(TabelBlodproeve.tablePanel);
+        tablePanel.add(TabelAGas.tablePanel);
+
+        panel.add(tablePanel, BorderLayout.CENTER);
 
         return panel;
     }
@@ -62,8 +68,8 @@ package view;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import view.TabelGenereltPage;
+import view.TabelBlodproeve;
+import view.TabelAGas;
 
 public class GenereltPage {
     public static JPanel createPanel(int valgtStue) {
@@ -111,7 +117,21 @@ public class GenereltPage {
         topContainer.add(buttonPanelBottom);
 
         panel.add(topContainer, BorderLayout.NORTH);
-        panel.add(TabelGenereltPage.tablePanel, BorderLayout.CENTER);
+
+        // Add tables to separate sections with labels
+        JPanel tablePanel = new JPanel(new GridLayout(4, 1));
+
+        JLabel crrtLabel = new JLabel("CRRT-parametre", SwingConstants.CENTER);
+        crrtLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        tablePanel.add(crrtLabel);
+        tablePanel.add(TabelBlodproeve.tablePanel);
+
+        JLabel agasLabel = new JLabel("A-gas", SwingConstants.CENTER);
+        agasLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        tablePanel.add(agasLabel);
+        tablePanel.add(TabelAGas.tablePanel);
+
+        panel.add(tablePanel, BorderLayout.CENTER);
 
         return panel;
     }
