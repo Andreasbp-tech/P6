@@ -1,8 +1,9 @@
 package controller;
 
 import model.MedarbejderModel;
+import model.ValgStueModel;
 import view.AuthenticationView;
-import view.ValgStue; // Import ValgStue class
+import view.ValgStueView; // Import ValgStue class
 import java.awt.event.ActionListener; // Import ActionListener
 
 public class AuthenticationController {
@@ -21,7 +22,10 @@ public class AuthenticationController {
         if (model.isValidMedarbejderID(medarbejderID)) {
             model.logUserLogin(medarbejderID);
             // Gå til næste side
-            ValgStue.launch(); // Start ValgStue klassen
+            ValgStueModel valgStueModel = new ValgStueModel();
+            ValgStueView valgStueView = new ValgStueView();
+            ValgStueController valgStueController = new ValgStueController(valgStueModel, valgStueView);
+            valgStueController.showView(); // Start ValgStue klassen
             view.dispose(); // Luk login vinduet
         } else {
             view.showErrorMessage("Forkert MedarbejderID!");

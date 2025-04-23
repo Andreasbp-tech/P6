@@ -4,12 +4,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import model.ValgStueModel;
+
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import utilities.DatabaseConnection;
-import view.ValgStue;
+import view.ValgStueView;
 
 public class TabelCRRT {
     public static JPanel tablePanel;
@@ -42,7 +45,8 @@ public class TabelCRRT {
         });
 
         // Fetch data and populate table
-        fetchDataAndPopulateTables(model1, rowNames);
+        ValgStueModel valgStueModel = new ValgStueModel();
+        fetchDataAndPopulateTables(model1, rowNames, valgStueModel);
 
         // Set fixed width for the first column
         TableColumn firstColumn = table1.getColumnModel().getColumn(0);
@@ -57,12 +61,13 @@ public class TabelCRRT {
 
     }
 
-    private static void fetchDataAndPopulateTables(DefaultTableModel model1, String[] rowNames) {
+    private static void fetchDataAndPopulateTables(DefaultTableModel model1, String[] rowNames,
+            ValgStueModel valgStueModel) {
         try {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT * FROM CRRT WHERE CPR_nr = '" + ValgStue.cprNr
+            String query = "SELECT * FROM CRRT WHERE CPR_nr = '" + valgStueModel.getCprNr()
                     + "' ORDER BY tidspunkt DESC LIMIT 24";
             ResultSet resultSet = statement.executeQuery(query);
 

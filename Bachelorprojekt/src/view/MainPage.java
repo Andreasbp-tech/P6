@@ -1,7 +1,11 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
+
+import model.ValgStueModel;
 import utilities.HeaderPanelUtil;
+import view.GenereltPage;
 
 public class MainPage {
     public static void launch(int valgtStue) {
@@ -49,9 +53,14 @@ public class MainPage {
 
         frame.add(combinedPanel, BorderLayout.NORTH); // Add combined panel to the top
 
+        // Create an instance of ValgStueModel
+        ValgStueModel model = new ValgStueModel();
+        model.setValgtStue(valgtStue);
+        model.getPatientData(valgtStue); // Load patient data
+
         // Main panel with CardLayout
         JPanel mainPanel = new JPanel(new CardLayout());
-        JPanel genereltPanel = GenereltPage.createPanel(valgtStue);
+        JPanel genereltPanel = GenereltPage.createPanel(valgtStue, model);
         JPanel prøvesvarPanel = ProvesvarPage.createPanel(valgtStue);
         JPanel trendsPanel = TrendsPage.createPanel(valgtStue);
 

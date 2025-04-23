@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import utilities.DatabaseConnection;
-import view.ValgStue;
+import model.ValgStueModel;
 
 public class TabelAGas {
     public static JPanel tablePanel;
@@ -21,14 +21,19 @@ public class TabelAGas {
         // Create table with parametrene horisontalt and tidspunkterne vertikalt
         String[] rowNames = { "pH", "BE", "HCO3", "SystemiskCa", "PostfilterCa" };
         DefaultTableModel model1 = new DefaultTableModel();
-        JTable table1 = new JTable(model1); // Initialize table1
+        table1 = new JTable(model1); // Initialize table1
         table1.setRowHeight(20); // Set the row height to 20 pixels
 
         JScrollPane scrollPane1 = new JScrollPane(table1);
         tablePanel.add(scrollPane1);
 
+        // Create an instance of ValgStueModel
+        ValgStueModel model = new ValgStueModel();
+        model.setValgtStue(1); // Example value, you can set it dynamically
+        model.getPatientData(1); // Load patient data
+
         // Fetch data and populate table
-        fetchDataAndPopulateTables(model1, rowNames);
+        fetchDataAndPopulateTables(model1, rowNames, model);
 
         // Set custom cell renderer for alternating row colors and bold text
         table1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -49,18 +54,21 @@ public class TabelAGas {
         });
 
         // Set fixed width for the first column
-        TableColumn firstColumn = table1.getColumnModel().getColumn(0);
-        firstColumn.setPreferredWidth(100);
-        firstColumn.setMinWidth(100);
-        firstColumn.setMaxWidth(100);
+        if (table1.getColumnModel().getColumnCount() > 0) {
+            TableColumn firstColumn = table1.getColumnModel().getColumn(0);
+            firstColumn.setPreferredWidth(100);
+            firstColumn.setMinWidth(100);
+            firstColumn.setMaxWidth(100);
+        }
     }
 
-    private static void fetchDataAndPopulateTables(DefaultTableModel model1, String[] rowNames) {
+    private static void fetchDataAndPopulateTables(DefaultTableModel model1, String[] rowNames,
+            ValgStueModel valgStueModel) {
         try {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT * FROM A_gas WHERE CPR_nr = '" + ValgStue.cprNr
+            String query = "SELECT * FROM A_gas WHERE CPR_nr = '" + valgStueModel.getCprNr()
                     + "' ORDER BY tidspunkt DESC LIMIT 24";
             ResultSet resultSet = statement.executeQuery(query);
 
