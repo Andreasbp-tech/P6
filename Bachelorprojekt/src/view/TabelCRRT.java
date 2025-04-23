@@ -11,26 +11,22 @@ import java.sql.Statement;
 import utilities.DatabaseConnection;
 import view.ValgStue;
 
-public class TabelAGas {
+public class TabelCRRT {
     public static JPanel tablePanel;
-    private static JTable table1; // Class-level variable
+    // private static JTable table1;
 
     static {
-        tablePanel = new JPanel(new GridLayout(1, 1));
+        tablePanel = new JPanel(new BorderLayout());
 
         // Create table with parametrene horisontalt and tidspunkterne vertikalt
-        String[] rowNames = { "pH", "BE", "HCO3", "SystemiskCa", "PostfilterCa" };
+        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk",
+                "Returtryk", "Præfiltertryk", "Heparin",
+                "Citratdosis", "Calciumdosis" };
         DefaultTableModel model1 = new DefaultTableModel();
-        JTable table1 = new JTable(model1); // Initialize table1
-        table1.setRowHeight(20); // Set the row height to 20 pixels
+        JTable table1 = new JTable(model1);
+        table1.setRowHeight(20); // Set the row height to 30 pixels
 
-        JScrollPane scrollPane1 = new JScrollPane(table1);
-        tablePanel.add(scrollPane1);
-
-        // Fetch data and populate table
-        fetchDataAndPopulateTables(model1, rowNames);
-
-        // Set custom cell renderer for alternating row colors and bold text
+        // Set custom cell renderer for alternating row colors
         table1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -41,18 +37,24 @@ public class TabelAGas {
                 } else {
                     cell.setBackground(Color.WHITE);
                 }
-                if (column == 0 /* || row == 0 */) {
-                    cell.setFont(cell.getFont().deriveFont(Font.BOLD));
-                }
                 return cell;
             }
         });
+
+        // Fetch data and populate table
+        fetchDataAndPopulateTables(model1, rowNames);
 
         // Set fixed width for the first column
         TableColumn firstColumn = table1.getColumnModel().getColumn(0);
         firstColumn.setPreferredWidth(100);
         firstColumn.setMinWidth(100);
         firstColumn.setMaxWidth(100);
+
+        JScrollPane scrollPane1 = new JScrollPane(table1);
+        scrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        tablePanel.add(scrollPane1, BorderLayout.CENTER);
+
     }
 
     private static void fetchDataAndPopulateTables(DefaultTableModel model1, String[] rowNames) {
@@ -60,7 +62,7 @@ public class TabelAGas {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT * FROM A_gas WHERE CPR_nr = '" + ValgStue.cprNr
+            String query = "SELECT * FROM CRRT WHERE CPR_nr = '" + ValgStue.cprNr
                     + "' ORDER BY tidspunkt DESC LIMIT 24";
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -93,17 +95,25 @@ public class TabelAGas {
             // Populate data arrays with values from the result set
             int colIndex = model1.getColumnCount() - 1;
             while (resultSet.next()) {
-                double pH = resultSet.getDouble("pH");
-                double BE = resultSet.getDouble("BE");
-                double HCO3 = resultSet.getDouble("HCO3");
-                double systemiskCa = resultSet.getDouble("SystemiskCa");
-                double postfilterCa = resultSet.getDouble("PostfilterCa");
+                double dialysatflow = resultSet.getDouble("dialysatflow");
+                double blodflow = resultSet.getDouble("blodflow");
+                double væsketræk = resultSet.getDouble("væsketræk");
+                double indløbstryk = resultSet.getDouble("indløbstryk");
+                double returtryk = resultSet.getDouble("returtryk");
+                double præfiltertryk = resultSet.getDouble("præfiltertryk");
+                double heparin = resultSet.getDouble("heparin");
+                double citratdosis = resultSet.getDouble("citratdosis");
+                double calciumdosis = resultSet.getDouble("calciumdosis");
 
-                data1[0][colIndex] = pH;
-                data1[1][colIndex] = BE;
-                data1[2][colIndex] = HCO3;
-                data1[3][colIndex] = systemiskCa;
-                data1[4][colIndex] = postfilterCa;
+                data1[0][colIndex] = dialysatflow;
+                data1[1][colIndex] = blodflow;
+                data1[2][colIndex] = væsketræk;
+                data1[3][colIndex] = indløbstryk;
+                data1[4][colIndex] = returtryk;
+                data1[5][colIndex] = præfiltertryk;
+                data1[6][colIndex] = heparin;
+                data1[7][colIndex] = citratdosis;
+                data1[8][colIndex] = calciumdosis;
 
                 colIndex--;
             }
@@ -121,11 +131,13 @@ public class TabelAGas {
         }
     }
 
-    public static void clearTable() {
-        DefaultTableModel model = (DefaultTableModel) table1.getModel();
-        model.setRowCount(0); // Clear all rows
-        model.setColumnCount(0); // Clear all columns
-    }
+    /*
+     * public static void clearTable() {
+     * DefaultTableModel model = (DefaultTableModel) table1.getModel();
+     * model.setRowCount(0); // Clear all rows
+     * model.setColumnCount(0); // Clear all columns
+     * }
+     */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
