@@ -1,9 +1,11 @@
 package controller;
 
+import model.MainPageModel;
 import model.ValgStueModel;
 import view.ValgStueView;
 import view.GenereltPage; // Import GenereltPage class
-import view.MainPage;
+import view.MainPageView;
+import controller.MainPageController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +28,11 @@ public class ValgStueController {
                     model.setValgtStue(Integer.parseInt(stueButton.getText().split(" ")[1]));
                     view.dispose(); // Close the selection screen
                     model.getPatientData(model.getValgtStue());
-                    MainPage.launch(model.getValgtStue()); // Open the next screen with the selected Stue
+                    MainPageModel mainPageModel = new MainPageModel();
+                    mainPageModel.setValgtStue(model.getValgtStue()); // Set valgtStue in MainPageModel
+                    MainPageView mainPageView = new MainPageView();
+                    MainPageController mainPageController = new MainPageController(mainPageModel, mainPageView);
+                    mainPageController.showView(); // Call the non-static method on the instance
                 }
             });
             view.addButton(stueButton);
