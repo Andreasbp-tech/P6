@@ -7,17 +7,22 @@ import controller.RegistrerCRRTController;
 import model.RegistrerCitratmetabolismeModel;
 import view.RegistrerCitratmetabolismeView;
 import controller.RegistrerCitratmetabolismeController;
+import model.ValgStueModel;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
+    private ValgStueModel valgStueModel;
 
-    public ParameterPopupController(ParameterPopupView view) {
+    public ParameterPopupController(ParameterPopupView view, ValgStueModel valgStueModel) {
         this.view = view;
+        this.valgStueModel = valgStueModel;
+
         this.view.getCrrtButton().addActionListener(e -> {
             view.close();
             RegistrerCRRTModel model = new RegistrerCRRTModel();
             RegistrerCRRTView crrtView = new RegistrerCRRTView();
-            RegistrerCRRTController crrtController = new RegistrerCRRTController(model, crrtView);
+            RegistrerCRRTController crrtController = new RegistrerCRRTController(model, crrtView,
+                    valgStueModel.getCprNr());
             crrtController.showView(); // Open the RegistrerCRRTView
         });
         this.view.getCitratButton().addActionListener(e -> {

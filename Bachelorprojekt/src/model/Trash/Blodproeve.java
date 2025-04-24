@@ -1,4 +1,4 @@
-package model;
+package model.Trash;
 
 public class Blodproeve extends Biokemi {
     private double totalCa;
@@ -8,7 +8,8 @@ public class Blodproeve extends Biokemi {
     private double infektionstal;
 
     // Constructor
-    public Blodproeve(String CPR_nr, String tidspunkt, double totalCa, double kreatinin, double carbamid, double kalium, double infektionstal) {
+    public Blodproeve(String CPR_nr, String tidspunkt, double totalCa, double kreatinin, double carbamid, double kalium,
+            double infektionstal) {
         super(CPR_nr, tidspunkt);
         this.totalCa = totalCa;
         this.kreatinin = kreatinin;

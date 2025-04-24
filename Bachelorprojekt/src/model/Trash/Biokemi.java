@@ -1,4 +1,4 @@
-package model;
+package model.Trash;
 
 public class Biokemi {
     private String CPR_nr;

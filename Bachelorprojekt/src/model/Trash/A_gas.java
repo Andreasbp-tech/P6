@@ -1,4 +1,4 @@
-package model;
+package model.Trash;
 
 public class A_gas extends Biokemi {
     private double pH;
@@ -8,7 +8,8 @@ public class A_gas extends Biokemi {
     private double postfilterCa;
 
     // Constructor
-    public A_gas(String CPR_nr, String tidspunkt, double pH, double BE, double HCO3, double systemiskCa, double postfilterCa) {
+    public A_gas(String CPR_nr, String tidspunkt, double pH, double BE, double HCO3, double systemiskCa,
+            double postfilterCa) {
         super(CPR_nr, tidspunkt);
         this.pH = pH;
         this.BE = BE;

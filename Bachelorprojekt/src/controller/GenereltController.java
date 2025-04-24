@@ -1,7 +1,5 @@
 package controller;
 
-import java.lang.ModuleLayer.Controller;
-
 import model.ValgStueModel;
 import view.GenereltView;
 import view.ParameterPopupView;
@@ -26,14 +24,14 @@ public class GenereltController {
             ValgStueController valgStueController = new ValgStueController(valgStueModel, valgStueView);
             valgStueController.showView(); // Start ValgStue klassen
             System.out.println("GenereltController");
-
         });
 
         view.getRegistrerParameterButton().addActionListener(e -> {
             ParameterPopupView parameterPopupView = new ParameterPopupView();
-            ParameterPopupController parameterPopupController = new ParameterPopupController(parameterPopupView);
+            ParameterPopupController parameterPopupController = new ParameterPopupController(parameterPopupView, model);
             parameterPopupController.showView(); // Open the ParameterPopupView
         });
+
         view.getSeOrdinationerButton().addActionListener(e -> SeOrdinationerPage.launch());
     }
 
