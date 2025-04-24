@@ -1,8 +1,10 @@
 package controller;
 
 import view.ParameterPopupView;
-import view.RegistrerCRRTPage;
 import view.RegistrerCitratmetabolismePage;
+import model.RegistrerCRRTModel;
+import view.RegistrerCRRTView;
+import controller.RegistrerCRRTController;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
@@ -11,7 +13,10 @@ public class ParameterPopupController {
         this.view = view;
         this.view.getCrrtButton().addActionListener(e -> {
             view.close();
-            RegistrerCRRTPage.launch();
+            RegistrerCRRTModel model = new RegistrerCRRTModel();
+            RegistrerCRRTView crrtView = new RegistrerCRRTView();
+            RegistrerCRRTController crrtController = new RegistrerCRRTController(model, crrtView);
+            crrtController.showView(); // Open the RegistrerCRRTView
         });
         this.view.getCitratButton().addActionListener(e -> {
             view.close();

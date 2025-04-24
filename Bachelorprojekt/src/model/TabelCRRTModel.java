@@ -2,7 +2,6 @@ package model;
 
 import utilities.DatabaseConnection;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -16,7 +15,8 @@ public class TabelCRRTModel {
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
         List<Object[]> dataList = new ArrayList<>();
-        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk", "Heparin" };
+        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk",
+                "Heparin" };
 
         try {
             Connection conn = DatabaseConnection.getConnection();
@@ -53,7 +53,7 @@ public class TabelCRRTModel {
 
             resultSet.close();
             statement.close();
-            //connection.close();
+            // connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
