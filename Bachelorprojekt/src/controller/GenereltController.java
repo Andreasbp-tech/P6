@@ -1,9 +1,11 @@
 package controller;
 
+import java.lang.ModuleLayer.Controller;
+
 import model.ValgStueModel;
 import view.GenereltView;
+import view.ParameterPopupView;
 import view.ValgStueView;
-import view.RegistrerParametrePage;
 import view.SeOrdinationerPage;
 
 public class GenereltController {
@@ -27,7 +29,11 @@ public class GenereltController {
 
         });
 
-        view.getRegistrerParameterButton().addActionListener(e -> RegistrerParametrePage.launch());
+        view.getRegistrerParameterButton().addActionListener(e -> {
+            ParameterPopupView parameterPopupView = new ParameterPopupView();
+            ParameterPopupController parameterPopupController = new ParameterPopupController(parameterPopupView);
+            parameterPopupController.showView(); // Open the ParameterPopupView
+        });
         view.getSeOrdinationerButton().addActionListener(e -> SeOrdinationerPage.launch());
     }
 
