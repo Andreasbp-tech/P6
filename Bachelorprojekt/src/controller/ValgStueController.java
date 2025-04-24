@@ -3,7 +3,7 @@ package controller;
 import model.MainPageModel;
 import model.ValgStueModel;
 import view.ValgStueView;
-import view.GenereltPage; // Import GenereltPage class
+import view.GenereltView; // Import GenereltPage class
 import view.MainPageView;
 import controller.MainPageController;
 

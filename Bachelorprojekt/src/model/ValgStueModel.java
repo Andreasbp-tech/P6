@@ -45,6 +45,9 @@ public class ValgStueModel {
                     efternavn = rs.getString("Efternavn");
                     cprNr = rs.getString("CPR_nr");
                     found = true;
+                    // System.out.println("Fundet patient i DB");
+                    // System.out.println(fornavn + efternavn + ":" + cprNr);
+
                 } while (rs.next());
             }
 
@@ -52,6 +55,8 @@ public class ValgStueModel {
                 fornavn = " ";
                 efternavn = " ";
                 cprNr = " ";
+                // System.out.println("Ikke fundet patient i DB");
+
             }
 
         } catch (SQLException e) {

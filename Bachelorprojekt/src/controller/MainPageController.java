@@ -2,7 +2,7 @@ package controller;
 
 import model.MainPageModel;
 import view.MainPageView;
-import view.GenereltPage;
+import view.GenereltView;
 import view.ProvesvarPage;
 import view.TrendsPage;
 
@@ -16,7 +16,7 @@ public class MainPageController {
 
         model.loadPatientData(model.getValgtStue());
 
-        view.addPanel(GenereltPage.createPanel(model.getValgtStue(), model), "Generelt");
+        view.addPanel(GenereltView.createPanel(model.getValgtStue(), model), "Generelt");
         view.addPanel(ProvesvarPage.createPanel(model.getValgtStue()), "Prøvesvar");
         view.addPanel(TrendsPage.createPanel(model.getValgtStue()), "Trends");
 
