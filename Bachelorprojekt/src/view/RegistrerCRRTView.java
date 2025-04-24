@@ -1,9 +1,9 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 public class RegistrerCRRTView {
     private JFrame frame;
@@ -101,4 +101,9 @@ public class RegistrerCRRTView {
     public void close() {
         frame.dispose();
     }
+    
+     public void showError(String message) {
+         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+     } 
+        
 }
