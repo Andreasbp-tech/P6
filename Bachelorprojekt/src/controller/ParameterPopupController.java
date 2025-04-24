@@ -1,13 +1,14 @@
+
 package controller;
 
-import view.ParameterPopupView;
 import model.RegistrerCRRTModel;
-import view.RegistrerCRRTView;
-import controller.RegistrerCRRTController;
 import model.RegistrerCitratmetabolismeModel;
+import model.TabelCRRTModel; // Add this import statement
+import model.ValgStueModel; // Add this import statement
+import view.ParameterPopupView;
+import view.RegistrerCRRTView;
 import view.RegistrerCitratmetabolismeView;
-import controller.RegistrerCitratmetabolismeController;
-import model.ValgStueModel;
+import view.TabelCRRTView;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
@@ -21,8 +22,14 @@ public class ParameterPopupController {
             view.close();
             RegistrerCRRTModel model = new RegistrerCRRTModel();
             RegistrerCRRTView crrtView = new RegistrerCRRTView();
+            
+            // Create instances of TabelCRRTModel and TabelCRRTView
+            TabelCRRTModel tabelModel = new TabelCRRTModel();
+            TabelCRRTView tabelView = new TabelCRRTView();
+            TabelCRRTController tabelController = new TabelCRRTController(tabelModel, tabelView);
+            
             RegistrerCRRTController crrtController = new RegistrerCRRTController(model, crrtView,
-                    valgStueModel.getCprNr());
+                    valgStueModel.getCprNr(), tabelController); // Pass the tabelController instance
             crrtController.showView(); // Open the RegistrerCRRTView
         });
         this.view.getCitratButton().addActionListener(e -> {

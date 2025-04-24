@@ -1,22 +1,22 @@
 package model;
 
-import utilities.DatabaseConnection;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import utilities.DatabaseConnection;
 
 public class TabelCRRTModel {
     private List<String> timestamps;
     private Object[][] data;
+    private static final Logger logger = Logger.getLogger(TabelCRRTModel.class.getName());
 
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
         List<Object[]> dataList = new ArrayList<>();
-        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk",
-                "Heparin" };
+        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk", "Heparin" };
 
         try {
             Connection conn = DatabaseConnection.getConnection();
@@ -53,8 +53,11 @@ public class TabelCRRTModel {
 
             resultSet.close();
             statement.close();
-            // connection.close();
+            conn.close(); // Ensure the connection is closed
+
+            logger.info("Data fetched successfully for CPR: " + cprNr);
         } catch (Exception e) {
+            logger.severe("Error fetching data: " + e.getMessage());
             e.printStackTrace();
         }
     }
