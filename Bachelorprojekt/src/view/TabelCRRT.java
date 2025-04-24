@@ -1,18 +1,15 @@
 package view;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-
-import model.ValgStueModel;
-
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import model.ValgStueModel;
 import utilities.DatabaseConnection;
-import view.ValgStueView;
 
 public class TabelCRRT {
     public static JPanel tablePanel;
@@ -130,14 +127,6 @@ public class TabelCRRT {
             e.printStackTrace();
         }
     }
-
-    /*
-     * public static void clearTable() {
-     * DefaultTableModel model = (DefaultTableModel) table1.getModel();
-     * model.setRowCount(0); // Clear all rows
-     * model.setColumnCount(0); // Clear all columns
-     * }
-     */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
