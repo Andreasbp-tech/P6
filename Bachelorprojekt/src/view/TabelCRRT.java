@@ -23,8 +23,7 @@ public class TabelCRRT {
 
         // Create table with parametrene horisontalt and tidspunkterne vertikalt
         String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk",
-                "Returtryk", "Præfiltertryk", "Heparin",
-                "Citratdosis", "Calciumdosis" };
+                "Returtryk", "Præfiltertryk", "Heparin" };
         DefaultTableModel model1 = new DefaultTableModel();
         JTable table1 = new JTable(model1);
         table1.setRowHeight(20); // Set the row height to 30 pixels
@@ -107,8 +106,6 @@ public class TabelCRRT {
                 double returtryk = resultSet.getDouble("returtryk");
                 double præfiltertryk = resultSet.getDouble("præfiltertryk");
                 double heparin = resultSet.getDouble("heparin");
-                double citratdosis = resultSet.getDouble("citratdosis");
-                double calciumdosis = resultSet.getDouble("calciumdosis");
 
                 data1[0][colIndex] = dialysatflow;
                 data1[1][colIndex] = blodflow;
@@ -117,8 +114,6 @@ public class TabelCRRT {
                 data1[4][colIndex] = returtryk;
                 data1[5][colIndex] = præfiltertryk;
                 data1[6][colIndex] = heparin;
-                data1[7][colIndex] = citratdosis;
-                data1[8][colIndex] = calciumdosis;
 
                 colIndex--;
             }

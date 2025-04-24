@@ -71,6 +71,7 @@ public class TabelAGas {
             String query = "SELECT * FROM A_gas WHERE CPR_nr = '" + valgStueModel.getCprNr()
                     + "' ORDER BY tidspunkt DESC LIMIT 24";
             ResultSet resultSet = statement.executeQuery(query);
+            System.out.println(valgStueModel.getCprNr());
 
             // Add column names (timestamps) dynamically
             model1.addColumn("");

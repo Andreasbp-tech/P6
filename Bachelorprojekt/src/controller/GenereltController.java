@@ -23,6 +23,8 @@ public class GenereltController {
             ValgStueView valgStueView = new ValgStueView();
             ValgStueController valgStueController = new ValgStueController(valgStueModel, valgStueView);
             valgStueController.showView(); // Start ValgStue klassen
+            System.out.println("GenereltController");
+
         });
 
         view.getRegistrerParameterButton().addActionListener(e -> RegistrerParametrePage.launch());
