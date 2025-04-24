@@ -17,9 +17,13 @@ public class TabelCRRTView {
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+                if (column == 0) {
+                    cell.setFont(cell.getFont().deriveFont(Font.BOLD));
+                }
                 return cell;
             }
         });
