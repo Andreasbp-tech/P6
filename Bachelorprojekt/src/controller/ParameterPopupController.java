@@ -1,10 +1,12 @@
 package controller;
 
 import view.ParameterPopupView;
-import view.RegistrerCitratmetabolismePage;
 import model.RegistrerCRRTModel;
 import view.RegistrerCRRTView;
 import controller.RegistrerCRRTController;
+import model.RegistrerCitratmetabolismeModel;
+import view.RegistrerCitratmetabolismeView;
+import controller.RegistrerCitratmetabolismeController;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
@@ -20,7 +22,11 @@ public class ParameterPopupController {
         });
         this.view.getCitratButton().addActionListener(e -> {
             view.close();
-            RegistrerCitratmetabolismePage.launch();
+            RegistrerCitratmetabolismeModel model = new RegistrerCitratmetabolismeModel();
+            RegistrerCitratmetabolismeView citratView = new RegistrerCitratmetabolismeView();
+            RegistrerCitratmetabolismeController citratController = new RegistrerCitratmetabolismeController(model,
+                    citratView);
+            citratController.showView(); // Open the RegistrerCitratmetabolismeView
         });
         this.view.getCancelButton().addActionListener(e -> view.close());
     }

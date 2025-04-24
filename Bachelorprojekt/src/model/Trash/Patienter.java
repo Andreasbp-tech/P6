@@ -1,4 +1,4 @@
-package model;
+package model.Trash;
 
 public class Patienter {
     private String CPR_nr;
