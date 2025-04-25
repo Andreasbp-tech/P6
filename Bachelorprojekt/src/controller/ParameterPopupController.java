@@ -14,13 +14,16 @@ public class ParameterPopupController {
     private ParameterPopupView view;
     private ValgStueModel valgStueModel;
     private TabelCRRTController tabelController;
+    private TabelCitratmetabolismeController citratController;
 
     public ParameterPopupController(ParameterPopupView view,
             ValgStueModel valgStueModel,
-            TabelCRRTController tabelController) {
+            TabelCRRTController tabelController,
+            TabelCitratmetabolismeController citratController) {
         this.view = view;
         this.valgStueModel = valgStueModel;
         this.tabelController = tabelController;
+        this.citratController = citratController;
 
         view.getCrrtButton().addActionListener(e -> {
             view.close();
@@ -35,8 +38,8 @@ public class ParameterPopupController {
             view.close();
             RegistrerCitratmetabolismeModel model = new RegistrerCitratmetabolismeModel();
             RegistrerCitratmetabolismeView citratView = new RegistrerCitratmetabolismeView();
-            RegistrerCitratmetabolismeController controller = new RegistrerCitratmetabolismeController(model,
-                    citratView, valgStueModel.getCprNr());
+            RegistrerCitratmetabolismeController controller = new RegistrerCitratmetabolismeController(
+                    model, citratView, valgStueModel.getCprNr(), this.citratController);
             controller.showView();
         });
 

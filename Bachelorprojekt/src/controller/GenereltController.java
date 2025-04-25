@@ -37,7 +37,8 @@ public class GenereltController {
         view.getRegistrerParameterButton().addActionListener(e -> {
             ParameterPopupView popupView = new ParameterPopupView();
             TabelCRRTController tcCtrl = view.getTabelCRRTController();
-            ParameterPopupController popupCtrl = new ParameterPopupController(popupView, model, tcCtrl);
+            TabelCitratmetabolismeController citratCtrl = view.getTabelCitratmetabolismeController();
+            ParameterPopupController popupCtrl = new ParameterPopupController(popupView, model, tcCtrl, citratCtrl);
             popupCtrl.showView();
         });
     }

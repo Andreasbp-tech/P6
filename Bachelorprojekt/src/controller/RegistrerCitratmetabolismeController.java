@@ -6,14 +6,19 @@ import view.RegistrerCitratmetabolismeView;
 public class RegistrerCitratmetabolismeController {
     private RegistrerCitratmetabolismeModel model;
     private RegistrerCitratmetabolismeView view;
+    private TabelCitratmetabolismeController citratTabelCtrl;
 
     private String cprNr;
 
-    public RegistrerCitratmetabolismeController(RegistrerCitratmetabolismeModel model,
-            RegistrerCitratmetabolismeView view, String cprNr) {
+    public RegistrerCitratmetabolismeController(
+            RegistrerCitratmetabolismeModel model,
+            RegistrerCitratmetabolismeView view,
+            String cprNr,
+            TabelCitratmetabolismeController citratTabelCtrl) {
         this.model = model;
         this.view = view;
         this.cprNr = cprNr;
+        this.citratTabelCtrl = citratTabelCtrl;
 
         this.view.getSaveButton().addActionListener(e -> {
             String calciumdosis = view.getTextFields()[0].getText();
@@ -25,6 +30,7 @@ public class RegistrerCitratmetabolismeController {
                 return;
             }
             model.saveToDatabase(cprNr, calciumdosis, citratdosis);
+            citratTabelCtrl.updateView(cprNr);
             view.close();
         });
     }
