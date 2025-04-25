@@ -60,6 +60,9 @@ public class RegistrerCitratmetabolismeView {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
 
+        // Set the save button as default to respond to ENTER
+        frame.getRootPane().setDefaultButton(saveButton);
+
         frame.add(citratLabel, BorderLayout.NORTH);
         frame.add(panel, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -99,5 +102,9 @@ public class RegistrerCitratmetabolismeView {
 
     public void close() {
         frame.dispose();
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
     }
 }

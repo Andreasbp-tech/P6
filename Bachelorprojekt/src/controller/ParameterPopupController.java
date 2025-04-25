@@ -3,7 +3,10 @@ package controller;
 import model.ValgStueModel;
 import view.ParameterPopupView;
 import model.RegistrerCRRTModel;
+import model.RegistrerCitratmetabolismeModel;
 import view.RegistrerCRRTView;
+import view.RegistrerCitratmetabolismeView;
+import controller.RegistrerCitratmetabolismeController;
 import controller.RegistrerCRRTController;
 import controller.TabelCRRTController;
 
@@ -30,7 +33,11 @@ public class ParameterPopupController {
 
         view.getCitratButton().addActionListener(e -> {
             view.close();
-            // existing citrat logic...
+            RegistrerCitratmetabolismeModel model = new RegistrerCitratmetabolismeModel();
+            RegistrerCitratmetabolismeView citratView = new RegistrerCitratmetabolismeView();
+            RegistrerCitratmetabolismeController controller = new RegistrerCitratmetabolismeController(model,
+                    citratView, valgStueModel.getCprNr());
+            controller.showView();
         });
 
         view.getCancelButton().addActionListener(e -> view.close());

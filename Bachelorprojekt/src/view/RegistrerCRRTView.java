@@ -106,7 +106,7 @@ public class RegistrerCRRTView {
     }
 
     public void showError(String message) {
-        JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
     }
 
 }
