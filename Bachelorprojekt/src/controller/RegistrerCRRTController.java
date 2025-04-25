@@ -15,7 +15,8 @@ public class RegistrerCRRTController {
     private TabelCRRTController tabelController; // Add this field
     private static final Logger logger = Logger.getLogger(RegistrerCRRTController.class.getName());
 
-    public RegistrerCRRTController(RegistrerCRRTModel model, RegistrerCRRTView view, String cprNr, TabelCRRTController tabelController) {
+    public RegistrerCRRTController(RegistrerCRRTModel model, RegistrerCRRTView view, String cprNr,
+            TabelCRRTController tabelController) {
         this.model = model;
         this.view = view;
         this.cprNr = cprNr;
@@ -33,8 +34,9 @@ public class RegistrerCRRTController {
 
                 // Validate inputs
                 if (dialysatflow.isEmpty() || blodflow.isEmpty() || vaesketraek.isEmpty() ||
-                    indloebstryk.isEmpty() || returtryk.isEmpty() || praefiltertryk.isEmpty() || heparin.isEmpty()) {
-                    view.showError("All fields must be filled out.");
+                        indloebstryk.isEmpty() || returtryk.isEmpty() || praefiltertryk.isEmpty()
+                        || heparin.isEmpty()) {
+                    view.showError("Alle felter skal udfyldes.");
                     return;
                 }
 
@@ -48,15 +50,13 @@ public class RegistrerCRRTController {
                         returtryk, praefiltertryk, heparin);
                 logger.info("Data saved successfully for CPR: " + cprNr);
 
-       
-                 // Update the table view with new data on the EDT
-                 SwingUtilities.invokeLater(() -> {
-                logger.info("Calling updateView on TabelCRRTController.");
-                 tabelController.updateView(cprNr);
-                 tabelController.getView().getTable().revalidate();
-                 tabelController.getView().getTable().repaint();
-                 });
-                
+                // Update the table view with new data on the EDT
+                SwingUtilities.invokeLater(() -> {
+                    logger.info("Calling updateView on TabelCRRTController.");
+                    tabelController.updateView(cprNr);
+                    tabelController.getView().getTable().revalidate();
+                    tabelController.getView().getTable().repaint();
+                });
 
                 // Close the window
                 view.close();
@@ -72,5 +72,3 @@ public class RegistrerCRRTController {
         view.setVisible(true);
     }
 }
-
-
