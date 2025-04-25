@@ -61,6 +61,9 @@ public class RegistrerCRRTView {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
 
+        // Set the save button as default to respond to ENTER
+        frame.getRootPane().setDefaultButton(saveButton);
+
         frame.add(crrtLabel, BorderLayout.NORTH);
         frame.add(panel, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -101,9 +104,9 @@ public class RegistrerCRRTView {
     public void close() {
         frame.dispose();
     }
-    
-     public void showError(String message) {
-         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
-     } 
-        
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
 }

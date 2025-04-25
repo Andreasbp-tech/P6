@@ -1,10 +1,14 @@
 package controller;
 
+import java.awt.Window;
+import javax.swing.SwingUtilities;
 import model.ValgStueModel;
 import view.GenereltView;
 import view.ParameterPopupView;
+import controller.ParameterPopupController;
+import controller.TabelCRRTController;
 import view.ValgStueView;
-import view.SeOrdinationerPage;
+import controller.ValgStueController;
 
 public class GenereltController {
     private GenereltView view;
@@ -14,25 +18,28 @@ public class GenereltController {
         this.model = model;
         this.view = new GenereltView(valgtStue, model);
 
-        // Load patient data
-        model.getPatientData(valgtStue);
-
-        // Add action listeners
+        // Navigate back to room selection
         view.getStueButton().addActionListener(e -> {
-            ValgStueModel valgStueModel = new ValgStueModel();
-            ValgStueView valgStueView = new ValgStueView();
-            ValgStueController valgStueController = new ValgStueController(valgStueModel, valgStueView);
-            valgStueController.showView(); // Start ValgStue klassen
-            System.out.println("GenereltController");
+            // Close the current main window
+            Window window = SwingUtilities.getWindowAncestor(view.getPanel());
+            if (window != null) {
+                window.dispose();
+            }
+
+            // Open the ValgStue screen
+            ValgStueModel vsModel = new ValgStueModel();
+            ValgStueView vsView = new ValgStueView();
+            ValgStueController vsController = new ValgStueController(vsModel, vsView);
+            vsController.showView();
         });
 
+        // Show registration popup
         view.getRegistrerParameterButton().addActionListener(e -> {
-            ParameterPopupView parameterPopupView = new ParameterPopupView();
-            ParameterPopupController parameterPopupController = new ParameterPopupController(parameterPopupView, model);
-            parameterPopupController.showView(); // Open the ParameterPopupView
+            ParameterPopupView popupView = new ParameterPopupView();
+            TabelCRRTController tcCtrl = view.getTabelCRRTController();
+            ParameterPopupController popupCtrl = new ParameterPopupController(popupView, model, tcCtrl);
+            popupCtrl.showView();
         });
-
-        view.getSeOrdinationerButton().addActionListener(e -> SeOrdinationerPage.launch());
     }
 
     public GenereltView getView() {
