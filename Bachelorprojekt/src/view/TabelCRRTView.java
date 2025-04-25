@@ -20,10 +20,18 @@ public class TabelCRRTView {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Skiftende baggrund
                 cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+
+                // Justering og font
                 if (column == 0) {
+                    setHorizontalAlignment(LEFT); // Første kolonne venstrejusteret
                     cell.setFont(cell.getFont().deriveFont(Font.BOLD));
+                } else {
+                    setHorizontalAlignment(CENTER); // Øvrige kolonner centreret
                 }
+
                 return cell;
             }
         });

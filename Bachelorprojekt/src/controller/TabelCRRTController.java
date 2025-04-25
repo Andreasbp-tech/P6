@@ -24,30 +24,36 @@ public class TabelCRRTController {
         logger.info("Updating view with CPR: " + cprNr);
         model.fetchData(cprNr);
 
-        // Create a new table model
         DefaultTableModel tableModel = new DefaultTableModel();
         view.getTable().setModel(tableModel);
 
-        // Add columns
-        tableModel.addColumn("");
+        // Tilføj kolonner
+        tableModel.addColumn(""); // Første kolonne - tom
         for (String timestamp : model.getTimestamps()) {
             tableModel.addColumn(timestamp);
         }
 
-        // Add rows
+        // Første række: Datoer
+        Object[] dateRow = new Object[model.getTimestamps().size() + 1];
+        dateRow[0] = "";
+        for (int i = 0; i < model.getDates().size(); i++) {
+            dateRow[i + 1] = model.getDates().get(i);
+        }
+        tableModel.addRow(dateRow);
+
+        // Tilføj data rækker
         for (Object[] row : model.getData()) {
             tableModel.addRow(row);
             logger.info("Added row: " + java.util.Arrays.toString(row));
         }
 
-        // Set column widths
         TableColumn firstColumn = view.getTable().getColumnModel().getColumn(0);
         firstColumn.setPreferredWidth(100);
         firstColumn.setMinWidth(100);
         firstColumn.setMaxWidth(100);
 
-        logger.info("Table updated successfully.");
         view.getTable().revalidate();
         view.getTable().repaint();
     }
+
 }

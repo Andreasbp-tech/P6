@@ -7,30 +7,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import utilities.DatabaseConnection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TabelCRRTModel {
     private List<String> timestamps;
+    private List<String> dates;
     private Object[][] data;
     private static final Logger logger = Logger.getLogger(TabelCRRTModel.class.getName());
 
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
+        dates = new ArrayList<>();
         List<Object[]> dataList = new ArrayList<>();
-        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk", "Heparin" };
+        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk",
+                "Heparin" };
 
         try {
             Connection conn = DatabaseConnection.getConnection();
             Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT * FROM CRRT WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 24";
+            String query = "SELECT * FROM CRRT WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 18";
             ResultSet resultSet = statement.executeQuery(query);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             while (resultSet.next()) {
                 String tidspunkt = resultSet.getString("tidspunkt");
-                String timePart = tidspunkt.substring(11, 16);
+
+                LocalDateTime datetime = LocalDateTime.parse(tidspunkt, formatter);
+                String timePart = datetime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                String datePart = datetime.format(DateTimeFormatter.ofPattern("dd-MM-yy"));
+
                 timestamps.add(timePart);
+                dates.add(datePart);
             }
 
             java.util.Collections.reverse(timestamps);
+            java.util.Collections.reverse(dates);
 
             resultSet.beforeFirst();
             data = new Object[rowNames.length][timestamps.size() + 1];
@@ -64,6 +77,10 @@ public class TabelCRRTModel {
 
     public List<String> getTimestamps() {
         return timestamps;
+    }
+
+    public List<String> getDates() {
+        return dates;
     }
 
     public Object[][] getData() {

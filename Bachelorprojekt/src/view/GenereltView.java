@@ -47,7 +47,7 @@ public class GenereltView {
         topPanel.add(cprButton);
 
         JPanel combinedNorth = new JPanel(new BorderLayout());
-        combinedNorth.add(headerPanel, BorderLayout.NORTH);
+        // combinedNorth.add(headerPanel, BorderLayout.NORTH);
         combinedNorth.add(topPanel, BorderLayout.CENTER);
         panel.add(combinedNorth, BorderLayout.NORTH);
 
