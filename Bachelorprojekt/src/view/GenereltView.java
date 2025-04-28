@@ -1,19 +1,15 @@
 package view;
 
+import controller.TabelAGasController;
 import controller.TabelCRRTController;
 import controller.TabelCitratmetabolismeController;
-import controller.TabelAGasController;
+import java.awt.*;
+import javax.swing.*;
+import model.TabelAGasModel;
 import model.TabelCRRTModel;
 import model.TabelCitratmetabolismeModel;
-import model.TabelAGasModel;
 import model.ValgStueModel;
 import utilities.HeaderPanelUtil;
-import view.TabelCRRTView;
-import view.TabelCitratmetabolismeView;
-import view.TabelAGasView;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class GenereltView {
     private JPanel panel;
@@ -98,7 +94,7 @@ public class GenereltView {
 
         // A-gas section (weighty = 1)
         gbc.gridy = 2;
-        gbc.weighty = 1.7;
+        gbc.weighty = 2;
         JPanel agasSection = new JPanel(new BorderLayout());
         JLabel agasLabel = new JLabel("A-gas", SwingConstants.CENTER);
         agasLabel.setFont(new Font("Arial", Font.BOLD, 16));

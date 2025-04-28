@@ -1,9 +1,9 @@
 package view;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
 public class TabelCitratmetabolismeView {
     private JPanel tablePanel;
@@ -19,10 +19,18 @@ public class TabelCitratmetabolismeView {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Skiftende baggrund
                 cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+
+                // Justering og font
                 if (column == 0) {
+                    setHorizontalAlignment(LEFT); // Første kolonne venstrejusteret
                     cell.setFont(cell.getFont().deriveFont(Font.BOLD));
+                } else {
+                    setHorizontalAlignment(CENTER); // Øvrige kolonner centreret
                 }
+
                 return cell;
             }
         });
@@ -41,3 +49,4 @@ public class TabelCitratmetabolismeView {
         return table;
     }
 }
+
