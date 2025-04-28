@@ -1,14 +1,12 @@
 package controller;
 
-import model.ValgStueModel;
-import view.ParameterPopupView;
+import model.NormalvaerdierModel;
 import model.RegistrerCRRTModel;
 import model.RegistrerCitratmetabolismeModel;
+import model.ValgStueModel;
+import view.ParameterPopupView;
 import view.RegistrerCRRTView;
 import view.RegistrerCitratmetabolismeView;
-import controller.RegistrerCitratmetabolismeController;
-import controller.RegistrerCRRTController;
-import controller.TabelCRRTController;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
@@ -25,12 +23,17 @@ public class ParameterPopupController {
         this.tabelController = tabelController;
         this.citratController = citratController;
 
+        // Create NormalvaerdierModel to be passed to the RegistrerCRRTController
+        NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
+
         view.getCrrtButton().addActionListener(e -> {
             view.close();
-            RegistrerCRRTModel model = new RegistrerCRRTModel();
+            // Pass the NormalvaerdierModel to RegistrerCRRTModel constructor
+            RegistrerCRRTModel model = new RegistrerCRRTModel(normalvaerdierModel); // Pass NormalvaerdierModel
             RegistrerCRRTView crrtView = new RegistrerCRRTView();
+            // Pass the NormalvaerdierModel to RegistrerCRRTController
             RegistrerCRRTController crrtCtrl = new RegistrerCRRTController(
-                    model, crrtView, valgStueModel.getCprNr(), this.tabelController);
+                    model, crrtView, valgStueModel.getCprNr(), this.tabelController, normalvaerdierModel);
             crrtCtrl.showView();
         });
 

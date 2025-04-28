@@ -29,8 +29,7 @@ public class RegistrerCRRTView {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        String[] labels = { "Dialysatflow:", "Blodflow:", "Væsketræk:", "Indløbstryk:", "Returtryk:", "Præfiltertryk:",
-                "Heparin:" };
+        String[] labels = { "Dialysatflow:", "Blodflow:", "Væsketræk:", "Indløbstryk:", "Returtryk:", "Præfiltertryk:", "Heparin:" };
         String[] units = { "ml/time", "ml/time", "ml/time", "mmHg", "mmHg", "mmHg", "500 ie/ml" };
 
         textFields = new JTextField[labels.length];
@@ -61,7 +60,6 @@ public class RegistrerCRRTView {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
 
-        // Set the save button as default to respond to ENTER
         frame.getRootPane().setDefaultButton(saveButton);
 
         frame.add(crrtLabel, BorderLayout.NORTH);
@@ -81,7 +79,7 @@ public class RegistrerCRRTView {
             @Override
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE) {
+                if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != '.') {
                     e.consume();
                 }
             }
@@ -109,4 +107,18 @@ public class RegistrerCRRTView {
         JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
     }
 
+    // metode til at vise en bekræftelsesdialog
+    public int showConfirmDialog(String message, String title, String[] options) {
+        return JOptionPane.showOptionDialog(
+            frame,
+            message,
+            title,
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.WARNING_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+    }
 }
+
