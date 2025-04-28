@@ -1,9 +1,9 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 public class RegistrerCitratmetabolismeView {
     private JFrame frame;
@@ -106,5 +106,19 @@ public class RegistrerCitratmetabolismeView {
 
     public void showError(String message) {
         JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
+    }
+
+      // metode til at vise en bekræftelsesdialog
+      public int showConfirmDialog(String message, String title, String[] options) {
+        return JOptionPane.showOptionDialog(
+            frame,
+            message,
+            title,
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.WARNING_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
     }
 }

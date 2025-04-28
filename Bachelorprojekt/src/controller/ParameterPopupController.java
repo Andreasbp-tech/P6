@@ -26,6 +26,7 @@ public class ParameterPopupController {
         // Create NormalvaerdierModel to be passed to the RegistrerCRRTController
         NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
 
+        // Handle CRRT button
         view.getCrrtButton().addActionListener(e -> {
             view.close();
             // Pass the NormalvaerdierModel to RegistrerCRRTModel constructor
@@ -37,15 +38,19 @@ public class ParameterPopupController {
             crrtCtrl.showView();
         });
 
+        // Handle Citrat button
         view.getCitratButton().addActionListener(e -> {
             view.close();
+            // Create the model and view for CitratMetabolisme
             RegistrerCitratmetabolismeModel model = new RegistrerCitratmetabolismeModel();
             RegistrerCitratmetabolismeView citratView = new RegistrerCitratmetabolismeView();
+            // Pass the NormalvaerdierModel to RegistrerCitratmetabolismeController
             RegistrerCitratmetabolismeController controller = new RegistrerCitratmetabolismeController(
-                    model, citratView, valgStueModel.getCprNr(), this.citratController);
+                    model, citratView, valgStueModel.getCprNr(), this.citratController, normalvaerdierModel); // Pass NormalvaerdierModel
             controller.showView();
         });
 
+        // Handle cancel button
         view.getCancelButton().addActionListener(e -> view.close());
     }
 
