@@ -5,62 +5,57 @@ import utilities.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TabelBlodproveModel {
-    private List<String> tidspunkter; // Tidspunkter til kolonner
-    private List<String> dates; // Datoer til rækkenavne
-    private Object[][] data; // Data-array
-
-    public TabelBlodproveModel() {
-        tidspunkter = new ArrayList<>();
-        dates = new ArrayList<>();
-    }
+    private List<String> timestamps;
+    private List<String> dates;
+    private Object[][] data;
 
     public void fetchData(String cprNr) {
+        timestamps = new ArrayList<>();
+        dates = new ArrayList<>();
+        List<Object[]> dataList = new ArrayList<>();
+        String[] rowNames = { "Total Ca", "Kreatinin", "Carbamid", "Kalium", "Infektionstal", "Calcium Ratio" };
+
         try (Connection connection = DatabaseConnection.getConnection()) {
-            // Change ResultSet type to TYPE_SCROLL_INSENSITIVE for backwards and forwards
-            // navigation
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT tidspunkt, totalCa, kreatinin, carbamid, kalium, infektionstal, calciumratio " +
-                    "FROM Blodprøve WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 18";
+            String query = "SELECT * FROM Blodprøve WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 18";
             ResultSet rs = stmt.executeQuery(query);
 
-            // Clear previous data
-            tidspunkter.clear();
-            dates.clear();
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yy");
 
-            // Add column names for the row (blodprøveparametre)
-            dates.add("Total Ca");
-            dates.add("Kreatinin");
-            dates.add("Carbamid");
-            dates.add("Kalium");
-            dates.add("Infektionstal");
-            dates.add("Calcium Ratio");
-
-            // Add timestamps as column names
             while (rs.next()) {
-                String timestamp = rs.getString("tidspunkt");
-                tidspunkter.add(timestamp);
+                String tidspunkt = rs.getString("tidspunkt");
+                LocalDateTime dt = LocalDateTime.parse(tidspunkt, inputFormatter);
+                timestamps.add(dt.format(timeFormatter));
+                dates.add(dt.format(dateFormatter));
             }
 
-            // Initialize data array based on the size of timestamps
-            data = new Object[dates.size()][tidspunkter.size()];
+            Collections.reverse(timestamps);
+            Collections.reverse(dates);
 
-            // Move cursor back to the beginning of the result set and fill data array
             rs.beforeFirst();
-            int i = 0;
+            data = new Object[rowNames.length][timestamps.size() + 1];
+            for (int i = 0; i < rowNames.length; i++) {
+                data[i][0] = rowNames[i];
+            }
+
+            int colIndex = timestamps.size();
             while (rs.next()) {
-                // This assumes the columns in the result set match the order in the `dates`
-                // list
-                data[0][i] = rs.getDouble("totalCa");
-                data[1][i] = rs.getDouble("kreatinin");
-                data[2][i] = rs.getDouble("carbamid");
-                data[3][i] = rs.getDouble("kalium");
-                data[4][i] = rs.getDouble("infektionstal");
-                data[5][i] = rs.getDouble("calciumratio");
-                i++;
+                data[0][colIndex] = rs.getDouble("totalCa");
+                data[1][colIndex] = rs.getDouble("kreatinin");
+                data[2][colIndex] = rs.getDouble("carbamid");
+                data[3][colIndex] = rs.getDouble("kalium");
+                data[4][colIndex] = rs.getDouble("infektionstal");
+                data[5][colIndex] = rs.getDouble("calciumratio");
+                colIndex--;
             }
 
             rs.close();
@@ -70,8 +65,8 @@ public class TabelBlodproveModel {
         }
     }
 
-    public List<String> getTidspunkter() {
-        return tidspunkter;
+    public List<String> getTimestamps() {
+        return timestamps;
     }
 
     public List<String> getDates() {
