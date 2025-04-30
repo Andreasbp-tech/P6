@@ -29,8 +29,9 @@ public class RegistrerCRRTView {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        String[] labels = { "Dialysatflow:", "Blodflow:", "Væsketræk:", "Indløbstryk:", "Returtryk:", "Præfiltertryk:", "Heparin:" };
-        String[] units = { "ml/time", "ml/time", "ml/time", "mmHg", "mmHg", "mmHg", "500 ie/ml" };
+        String[] labels = { "Dialysatflow:", "Blodflow:", "Væsketræk:", "Indløbstryk:", "Returtryk:",
+                "Præfiltertryk:" };
+        String[] units = { "ml/time", "ml/time", "ml/time", "mmHg", "mmHg", "mmHg" };
 
         textFields = new JTextField[labels.length];
 
@@ -107,18 +108,15 @@ public class RegistrerCRRTView {
         JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
     }
 
-    // metode til at vise en bekræftelsesdialog
     public int showConfirmDialog(String message, String title, String[] options) {
         return JOptionPane.showOptionDialog(
-            frame,
-            message,
-            title,
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.WARNING_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
+                frame,
+                message,
+                title,
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]);
     }
 }
-

@@ -13,24 +13,24 @@ public class RegistrerCitratmetabolismeView {
     private JButton saveButton;
 
     public RegistrerCitratmetabolismeView() {
-        frame = new JFrame("Citrat Metabolisme Page");
+        frame = new JFrame("Væskekoncentrationer");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(450, 200);
+        frame.setSize(450, 250); // Øget størrelsen for at rumme heparin feltet
         frame.setLocationRelativeTo(null);
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
 
-        citratLabel = new JLabel("Indtast Citrat-metabolisme-parametre", SwingConstants.CENTER);
+        citratLabel = new JLabel("Indtast væskekoncentrationer", SwingConstants.CENTER);
         citratLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        String[] labels = { "Calciumdosis:", "Citratdosis:" };
-        String[] units = { "mmol/l", "mmol/l" };
+        String[] labels = { "Calciumdosis:", "Citratdosis:", "Heparin:" }; // Tilføjet Heparin
+        String[] units = { "mmol/l", "mmol/l", "ie/ml" }; // Enhed for Heparin
 
         textFields = new JTextField[labels.length];
 
@@ -73,18 +73,21 @@ public class RegistrerCitratmetabolismeView {
         textField.setFont(new Font("Arial", Font.PLAIN, 18));
         Dimension size = new Dimension(120, 30);
         textField.setPreferredSize(size);
-        textField.setMinimumSize(size);
-        textField.setMaximumSize(size);
 
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE) {
-                    e.consume();
+                String text = textField.getText();
+
+                if (!Character.isDigit(c) && c != '.' && c != '\b') {
+                    e.consume(); // ikke tal, komma eller backspace
+                } else if (c == ',' && text.contains(",")) {
+                    e.consume(); // kun ét komma tilladt
                 }
             }
         });
+
         return textField;
     }
 
@@ -108,17 +111,16 @@ public class RegistrerCitratmetabolismeView {
         JOptionPane.showMessageDialog(frame, message, "Fejl", JOptionPane.ERROR_MESSAGE);
     }
 
-      // metode til at vise en bekræftelsesdialog
-      public int showConfirmDialog(String message, String title, String[] options) {
+    // metode til at vise en bekræftelsesdialog
+    public int showConfirmDialog(String message, String title, String[] options) {
         return JOptionPane.showOptionDialog(
-            frame,
-            message,
-            title,
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.WARNING_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
+                frame,
+                message,
+                title,
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]);
     }
 }

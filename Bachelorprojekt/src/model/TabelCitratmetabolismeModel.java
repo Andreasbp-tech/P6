@@ -17,26 +17,22 @@ public class TabelCitratmetabolismeModel {
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
         dates = new ArrayList<>();
-        String[] rowNames = { "Calciumdosis", "Citratdosis" };
+        String[] rowNames = { "Calciumdosis", "Citratdosis", "Heparin" };
 
         try {
-            // Get the connection to the database
             Connection conn = DatabaseConnection.getConnection();
 
-            // Create a scrollable PreparedStatement
-            String query = "SELECT * FROM Citratmetabolisme WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 24";
+            String query = "SELECT * FROM Citratmetabolisme WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 18";
             PreparedStatement preparedStatement = conn.prepareStatement(
-                query,
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY
-            );
+                    query,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             preparedStatement.setString(1, cprNr);
 
             ResultSet rs = preparedStatement.executeQuery();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            // Extracting data from the result set
             while (rs.next()) {
                 String tidspunkt = rs.getString("tidspunkt");
                 LocalDateTime datetime = LocalDateTime.parse(tidspunkt, formatter);
@@ -47,15 +43,12 @@ public class TabelCitratmetabolismeModel {
                 dates.add(datePart);
             }
 
-            // Reverse lists to display in the correct order
             java.util.Collections.reverse(timestamps);
             java.util.Collections.reverse(dates);
 
-            // Initialize the data array
-            rs.beforeFirst(); // Now this will work correctly
+            rs.beforeFirst();
             data = new Object[rowNames.length][timestamps.size() + 1];
 
-            // Populate the data array
             for (int i = 0; i < rowNames.length; i++) {
                 data[i][0] = rowNames[i];
             }
@@ -64,6 +57,7 @@ public class TabelCitratmetabolismeModel {
             while (rs.next()) {
                 data[0][colIndex] = rs.getDouble("calciumdosis");
                 data[1][colIndex] = rs.getDouble("citratdosis");
+                data[2][colIndex] = rs.getDouble("heparin");
                 colIndex--;
             }
 

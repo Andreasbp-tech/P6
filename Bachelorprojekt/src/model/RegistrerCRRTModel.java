@@ -11,17 +11,16 @@ public class RegistrerCRRTModel {
     private static final Logger logger = Logger.getLogger(RegistrerCRRTModel.class.getName());
     private NormalvaerdierModel normalvaerdierModel;
 
-    // Constructor to initialize NormalvaerdierModel
     public RegistrerCRRTModel(NormalvaerdierModel normalvaerdierModel) {
         this.normalvaerdierModel = normalvaerdierModel;
     }
 
     public void saveToDatabase(String cprNr, String tidspunkt, String dialysatflow, String blodflow, String vaesketraek,
-                                String indloebstryk, String returtryk, String praefiltertryk, String heparin) {
-        String query = "INSERT INTO CRRT (CPR_nr, tidspunkt, dialysatflow, blodflow, væsketræk, indløbstryk, returtryk, præfiltertryk, heparin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String indloebstryk, String returtryk, String praefiltertryk) {
+        String query = "INSERT INTO CRRT (CPR_nr, tidspunkt, dialysatflow, blodflow, væsketræk, indløbstryk, returtryk, præfiltertryk) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, cprNr);
             pstmt.setString(2, tidspunkt);
@@ -31,7 +30,6 @@ public class RegistrerCRRTModel {
             pstmt.setDouble(6, Double.parseDouble(indloebstryk));
             pstmt.setDouble(7, Double.parseDouble(returtryk));
             pstmt.setDouble(8, Double.parseDouble(praefiltertryk));
-            pstmt.setDouble(9, Double.parseDouble(heparin));
 
             pstmt.executeUpdate();
             logger.info("Values saved to the database for CPR: " + cprNr);
@@ -41,11 +39,22 @@ public class RegistrerCRRTModel {
         }
     }
 
-    // Fetches the normal range for a given parameter from the database
+    public boolean isValueNormal(String parameterName, double value) {
+        try {
+            double[] normalRange = getNormalRange(parameterName);
+            double minValue = normalRange[0];
+            double maxValue = normalRange[1];
+            return value >= minValue && value <= maxValue;
+        } catch (SQLException e) {
+            logger.severe("Error fetching normal range for " + parameterName + ": " + e.getMessage());
+            return false;
+        }
+    }
+
     private double[] getNormalRange(String parameterName) throws SQLException {
         String query = "SELECT min_value, max_value FROM Normalværdier WHERE parameter = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, parameterName);
             ResultSet rs = pstmt.executeQuery();
 
@@ -56,20 +65,4 @@ public class RegistrerCRRTModel {
             }
         }
     }
-
-    // Checks if a value is within the normal range based on data from Normalværdier table
-    public boolean isValueNormal(String parameterName, double value) {
-        try {
-            double[] normalRange = getNormalRange(parameterName);
-            double minValue = normalRange[0];
-            double maxValue = normalRange[1];
-
-            return value >= minValue && value <= maxValue;
-        } catch (SQLException e) {
-            logger.severe("Error fetching normal range for " + parameterName + ": " + e.getMessage());
-            return false; // Default to false if there's an error fetching normal range
-        }
-    }
 }
-
-

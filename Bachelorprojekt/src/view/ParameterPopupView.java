@@ -29,7 +29,7 @@ public class ParameterPopupView {
         crrtButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         crrtButton.setMaximumSize(new Dimension(175, crrtButton.getMinimumSize().height));
 
-        citratButton = new JButton("Citrat metabolisme");
+        citratButton = new JButton("Væskekoncentrationer");
         citratButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         citratButton.setMaximumSize(new Dimension(175, citratButton.getMinimumSize().height));
 

@@ -26,7 +26,12 @@ public class GenereltView {
         model.getPatientData(valgtStue);
         panel = new JPanel(new BorderLayout());
 
-        // Header and top buttons with spacing
+        // Skærm dimensioner
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenHeight = (int) screenSize.getHeight();
+        int screenWidth = (int) screenSize.getWidth();
+
+        // Header og topknapper
         JPanel headerPanel = HeaderPanelUtil.createHeaderPanel();
         JPanel topPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -43,7 +48,6 @@ public class GenereltView {
         topPanel.add(cprButton);
 
         JPanel combinedNorth = new JPanel(new BorderLayout());
-        // combinedNorth.add(headerPanel, BorderLayout.NORTH);
         combinedNorth.add(topPanel, BorderLayout.CENTER);
         panel.add(combinedNorth, BorderLayout.NORTH);
 
@@ -56,17 +60,12 @@ public class GenereltView {
         actionPanel.add(registrerParameterButton);
         actionPanel.add(seOrdinationerButton);
 
-        // Tables container with weighted rows
-        JPanel tablesContainer = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1;
+        // Container til tabellerne
+        JPanel tablesContainer = new JPanel();
+        tablesContainer.setLayout(new BoxLayout(tablesContainer, BoxLayout.Y_AXIS));
+        tablesContainer.setPreferredSize(new Dimension(screenWidth, screenHeight - 200)); // tilpasset skærmhøjde
 
-        // CRRT section (weighty = 3)
-        gbc.gridy = 0;
-        gbc.weighty = 2.4;
+        // --- CRRT Sektion ---
         JPanel crrtSection = new JPanel(new BorderLayout());
         JLabel crrtLabel = new JLabel("CRRT-parametre", SwingConstants.CENTER);
         crrtLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -75,38 +74,40 @@ public class GenereltView {
         TabelCRRTView tabelView = new TabelCRRTView();
         this.tabelCRRTController = new TabelCRRTController(tabelModel, tabelView);
         this.tabelCRRTController.updateView(model.getCprNr());
-        crrtSection.add(tabelView.getTablePanel(), BorderLayout.CENTER);
-        tablesContainer.add(crrtSection, gbc);
+        JPanel crrtTablePanel = tabelView.getTablePanel();
+        crrtTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.4)));
+        crrtSection.add(crrtTablePanel, BorderLayout.CENTER);
+        tablesContainer.add(crrtSection);
 
-        // Citrat section (weighty = 1)
-        gbc.gridy = 1;
-        gbc.weighty = 0.7;
+        // --- Citrat Sektion --- //rettet til væskekoncentrationer
         JPanel citratSection = new JPanel(new BorderLayout());
-        JLabel citratLabel = new JLabel("Citratmetabolisme", SwingConstants.CENTER);
+        JLabel citratLabel = new JLabel("Væskekoncentrationer", SwingConstants.CENTER);
         citratLabel.setFont(new Font("Arial", Font.BOLD, 16));
         citratSection.add(citratLabel, BorderLayout.NORTH);
         TabelCitratmetabolismeModel citratModel = new TabelCitratmetabolismeModel();
         TabelCitratmetabolismeView citratView = new TabelCitratmetabolismeView();
         this.tabelCitratmetabolismeController = new TabelCitratmetabolismeController(citratModel, citratView);
         this.tabelCitratmetabolismeController.updateView(model.getCprNr());
-        citratSection.add(citratView.getTablePanel(), BorderLayout.CENTER);
-        tablesContainer.add(citratSection, gbc);
+        JPanel citratTablePanel = citratView.getTablePanel();
+        citratTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.25)));
+        citratSection.add(citratTablePanel, BorderLayout.CENTER);
+        tablesContainer.add(citratSection);
 
-        // A-gas section (weighty = 1)
-        gbc.gridy = 2;
-        gbc.weighty = 2;
+        // --- A-gas Sektion --- // tilføjet maskinprøver
         JPanel agasSection = new JPanel(new BorderLayout());
-        JLabel agasLabel = new JLabel("A-gas", SwingConstants.CENTER);
+        JLabel agasLabel = new JLabel("A-gas og maskinprøver", SwingConstants.CENTER);
         agasLabel.setFont(new Font("Arial", Font.BOLD, 16));
         agasSection.add(agasLabel, BorderLayout.NORTH);
         TabelAGasModel agasModel = new TabelAGasModel();
         TabelAGasView agasView = new TabelAGasView();
         TabelAGasController agasCtrl = new TabelAGasController(agasModel, agasView);
         agasCtrl.updateView(model.getCprNr());
-        agasSection.add(agasView.getTablePanel(), BorderLayout.CENTER);
-        tablesContainer.add(agasSection, gbc);
+        JPanel agasTablePanel = agasView.getTablePanel();
+        agasTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.35)));
+        agasSection.add(agasTablePanel, BorderLayout.CENTER);
+        tablesContainer.add(agasSection);
 
-        // Combine actionPanel and tablesContainer
+        // Combine midterpanel
         JPanel centerContainer = new JPanel(new BorderLayout());
         centerContainer.add(actionPanel, BorderLayout.NORTH);
         centerContainer.add(tablesContainer, BorderLayout.CENTER);

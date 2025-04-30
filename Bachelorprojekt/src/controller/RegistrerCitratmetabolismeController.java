@@ -1,44 +1,3 @@
-/*package controller;
-
-import model.RegistrerCitratmetabolismeModel;
-import view.RegistrerCitratmetabolismeView;
-
-public class RegistrerCitratmetabolismeController {
-    private RegistrerCitratmetabolismeModel model;
-    private RegistrerCitratmetabolismeView view;
-    private TabelCitratmetabolismeController citratTabelCtrl;
-
-    private String cprNr;
-
-    public RegistrerCitratmetabolismeController(
-            RegistrerCitratmetabolismeModel model,
-            RegistrerCitratmetabolismeView view,
-            String cprNr,
-            TabelCitratmetabolismeController citratTabelCtrl) {
-        this.model = model;
-        this.view = view;
-        this.cprNr = cprNr;
-        this.citratTabelCtrl = citratTabelCtrl;
-
-        this.view.getSaveButton().addActionListener(e -> {
-            String calciumdosis = view.getTextFields()[0].getText();
-            String citratdosis = view.getTextFields()[1].getText();
-
-            // Validate inputs
-            if (calciumdosis.isEmpty() || citratdosis.isEmpty()) {
-                view.showError("Alle felter skal udfyldes.");
-                return;
-            }
-            model.saveToDatabase(cprNr, calciumdosis, citratdosis);
-            citratTabelCtrl.updateView(cprNr);
-            view.close();
-        });
-    }
-
-    public void showView() {
-        view.setVisible(true);
-    }
-}*/
 package controller;
 
 import model.NormalvaerdierModel;
@@ -49,7 +8,7 @@ public class RegistrerCitratmetabolismeController {
     private RegistrerCitratmetabolismeModel model;
     private RegistrerCitratmetabolismeView view;
     private TabelCitratmetabolismeController citratTabelCtrl;
-    private NormalvaerdierModel normalvaerdierModel;  // Added NormalvaerdierModel
+    private NormalvaerdierModel normalvaerdierModel; // Added NormalvaerdierModel
 
     private String cprNr;
 
@@ -63,17 +22,16 @@ public class RegistrerCitratmetabolismeController {
         this.view = view;
         this.cprNr = cprNr;
         this.citratTabelCtrl = citratTabelCtrl;
-        this.normalvaerdierModel = normalvaerdierModel;  // Initialize NormalvaerdierModel
+        this.normalvaerdierModel = normalvaerdierModel; // Initialize NormalvaerdierModel
 
         this.view.getSaveButton().addActionListener(e -> saveData());
     }
 
     private void saveData() {
         try {
-            String[] parameterNames = { "Calciumdosis", "Citratdosis" };
+            String[] parameterNames = { "Calciumdosis", "Citratdosis", "Heparin" };
             String[] values = new String[view.getTextFields().length];
 
-            // Fetching values from the view
             for (int i = 0; i < view.getTextFields().length; i++) {
                 values[i] = view.getTextFields()[i].getText();
                 if (values[i].isEmpty()) {
@@ -82,24 +40,50 @@ public class RegistrerCitratmetabolismeController {
                 }
             }
 
-            // Validate values based on the normal range
-            for (int i = 0; i < values.length; i++) {
+            StringBuilder warningMessage = new StringBuilder();
+            boolean requiresDoctorNotification = false;
+
+            // Tjek for normalværdi-afvigelser på heparin
+            for (int i = 2; i < 3; i++) {
                 double parsedValue = Double.parseDouble(values[i]);
-                if (!normalvaerdierModel.isValueNormal(parameterNames[i], parsedValue)) {
+                if (!normalvaerdierModel.isValueNormalVaesker(parameterNames[i], parsedValue)) {
                     double[] range = normalvaerdierModel.getRange(parameterNames[i]);
-                    String errorMessage = String.format("%s er udenfor normalområdet, som er %.2f - %.2f. \n Vil du ændre eller fortsætte?", 
-                            parameterNames[i], range[0], range[1]);
-                    
-                    // Show a confirmation dialog with the error message and options to change or continue
-                    int choice = view.showConfirmDialog(errorMessage, "Beslutningsstøtte", new String[]{"Ændre", "Fortsæt"});
-                    if (choice == 0) {
-                        return; // User wants to change the value
-                    }
+                    warningMessage.append(String.format("%s er udenfor standardoser (0 eller %.2f).\n",
+                            parameterNames[i], range[1]));
                 }
             }
 
-            // Save the data to the database
-            model.saveToDatabase(cprNr, values[0], values[1]);
+            // Tjek for afvigelser ift. tidligere måling (calcium og citrat)
+            double[] latest = model.getLatestValues(cprNr);
+            if (latest != null) {
+                double currentCalcium = Double.parseDouble(values[0]);
+                double currentCitrat = Double.parseDouble(values[1]);
+
+                if (Math.abs(currentCalcium - latest[0]) >= 0.4) {
+                    warningMessage.append("Calciumdosis afviger med 0,4 eller mere fra seneste måling.\n");
+                    requiresDoctorNotification = true;
+                }
+                if (Math.abs(currentCitrat - latest[1]) >= 0.2) {
+                    warningMessage.append("Citratdosis afviger med 0,2 eller mere fra seneste måling.\n");
+                    requiresDoctorNotification = true;
+                }
+            }
+
+            if (requiresDoctorNotification) {
+                warningMessage.append("\nHusk at informere en læge.");
+            }
+
+            // Hvis der er nogen advarsler, vis samlet popup
+            if (warningMessage.length() > 0) {
+                int choice = view.showConfirmDialog(warningMessage.toString(), "Beslutningsstøtte",
+                        new String[] { "Ændre", "Fortsæt" });
+                if (choice == 0) {
+                    return; // Brugeren vil ændre værdierne
+                }
+            }
+
+            // Gem data
+            model.saveToDatabase(cprNr, values[0], values[1], values[2]);
             citratTabelCtrl.updateView(cprNr);
             view.close();
 
@@ -112,4 +96,3 @@ public class RegistrerCitratmetabolismeController {
         view.setVisible(true);
     }
 }
-

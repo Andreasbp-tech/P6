@@ -20,8 +20,7 @@ public class TabelCRRTModel {
         timestamps = new ArrayList<>();
         dates = new ArrayList<>();
         List<Object[]> dataList = new ArrayList<>();
-        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk",
-                "Heparin" };
+        String[] rowNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk", "Præfiltertryk" };
 
         try {
             Connection conn = DatabaseConnection.getConnection();
@@ -60,13 +59,12 @@ public class TabelCRRTModel {
                 data[3][colIndex] = resultSet.getDouble("indløbstryk");
                 data[4][colIndex] = resultSet.getDouble("returtryk");
                 data[5][colIndex] = resultSet.getDouble("præfiltertryk");
-                data[6][colIndex] = resultSet.getDouble("heparin");
                 colIndex--;
             }
 
             resultSet.close();
             statement.close();
-            conn.close(); // Ensure the connection is closed
+            conn.close();
 
             logger.info("Data fetched successfully for CPR: " + cprNr);
         } catch (Exception e) {
