@@ -3,7 +3,6 @@ package controller;
 import model.MainPageModel;
 import view.MainPageView;
 import view.GenereltView;
-import view.ProvesvarPage;
 import view.TrendsPage;
 
 public class MainPageController {
@@ -20,7 +19,15 @@ public class MainPageController {
         GenereltController genereltController = new GenereltController(model.getValgtStue(), model);
         view.addPanel(genereltController.getView().getPanel(), "Generelt");
 
-        view.addPanel(ProvesvarPage.createPanel(model.getValgtStue()), "Prøvesvar");
+        ProvesvarController provesvarController = new ProvesvarController(model.getCprNr());
+        view.addPanel(provesvarController.getView().getMainPanel(), "Prøvesvar");
+
+        /*
+         * ProvesvarPage provesvarPage = new ProvesvarPage();
+         * view.addPanel(provesvarPage.createPanel(model.getCprNr(),
+         * model.getValgtStue()), "Prøvesvar");
+         */
+
         view.addPanel(TrendsPage.createPanel(model.getValgtStue()), "Trends");
 
         view.getGenereltButton().addActionListener(e -> {
