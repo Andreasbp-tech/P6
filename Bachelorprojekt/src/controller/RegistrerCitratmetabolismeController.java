@@ -76,7 +76,7 @@ public class RegistrerCitratmetabolismeController {
             // Hvis der er nogen advarsler, vis samlet popup
             if (warningMessage.length() > 0) {
                 int choice = view.showConfirmDialog(warningMessage.toString(), "Beslutningsstøtte",
-                        new String[] { "Ændre", "Fortsæt" });
+                        new String[] { "Ændre", "Gem alligevel" });
                 if (choice == 0) {
                     return; // Brugeren vil ændre værdierne
                 }

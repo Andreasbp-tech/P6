@@ -16,24 +16,29 @@ public class RegistrerCRRTController {
     private NormalvaerdierModel normalvaerdierModel;
     private static final Logger logger = Logger.getLogger(RegistrerCRRTController.class.getName());
 
-    public RegistrerCRRTController(RegistrerCRRTModel model, RegistrerCRRTView view, String cprNr,
-            TabelCRRTController tabelController, NormalvaerdierModel normalvaerdierModel) {
+    public RegistrerCRRTController(RegistrerCRRTModel model,
+            RegistrerCRRTView view,
+            String cprNr,
+            TabelCRRTController tabelController,
+            NormalvaerdierModel normalvaerdierModel) {
         this.model = model;
         this.view = view;
         this.cprNr = cprNr;
         this.tabelController = tabelController;
         this.normalvaerdierModel = normalvaerdierModel;
-
         this.view.getSaveButton().addActionListener(e -> saveData());
     }
 
     private void saveData() {
         try {
-            String[] parameterNames = { "Dialysatflow", "Blodflow", "Væsketræk", "Indløbstryk", "Returtryk",
-                    "Præfiltertryk" };
+            String[] parameterNames = {
+                    "Dialysatflow", "Blodflow", "Væsketræk",
+                    "Indløbstryk", "Returtryk", "Præfiltertryk"
+            };
             String[] values = new String[view.getTextFields().length];
 
-            for (int i = 0; i < view.getTextFields().length; i++) {
+            // Hent input og tjek for tomme felter
+            for (int i = 0; i < values.length; i++) {
                 values[i] = view.getTextFields()[i].getText();
                 if (values[i].isEmpty()) {
                     view.showError("Alle felter skal udfyldes.");
@@ -41,31 +46,41 @@ public class RegistrerCRRTController {
                 }
             }
 
+            // Byg samlet fejlmeddelelse
+            StringBuilder warning = new StringBuilder();
+            boolean requiresDoctorNotification = false;
             for (int i = 0; i < values.length; i++) {
-                double parsedValue = Double.parseDouble(values[i]);
-                if (!normalvaerdierModel.isValueNormal(parameterNames[i], parsedValue)) {
+                double val = Double.parseDouble(values[i]);
+                if (!normalvaerdierModel.isValueNormal(parameterNames[i], val)) {
                     double[] range = normalvaerdierModel.getRange(parameterNames[i]);
-                    String errorMessage = String.format(
-                            "%s er udenfor normalområdet, som er %.2f - %.2f. \n Vil du ændre eller fortsætte?",
-                            parameterNames[i], range[0], range[1]);
-                    int choice = view.showConfirmDialog(errorMessage, "Beslutnigsstøtte",
-                            new String[] { "Ændre", "Fortsæt" });
-                    if (choice == 0) {
-                        return;
-                    }
+                    warning.append(String.format(
+                            "%s (%.2f) er uden for normalområdet %.2f–%.2f.\n",
+                            parameterNames[i], val, range[0], range[1]));
                 }
             }
 
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedTimestamp = sdf.format(timestamp);
+            // Hvis der er nogen fejl, vis samlet popup
+            if (warning.length() > 0) {
+                int choice = view.showConfirmDialog(
+                        warning.toString(),
+                        "Beslutningsstøtte",
+                        new String[] { "Ændre", "Gem alligevel" });
+                if (choice == 0) {
+                    return; // Brugeren vil ændre værdierne
+                }
+            }
 
-            model.saveToDatabase(cprNr, formattedTimestamp,
-                    values[0], values[1], values[2], values[3], values[4], values[5]);
+            // Gem data
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
+            String tid = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts);
+            model.saveToDatabase(
+                    cprNr, tid,
+                    values[0], values[1], values[2],
+                    values[3], values[4], values[5]);
             logger.info("Data saved successfully for CPR: " + cprNr);
 
+            // Opdater tabelvisning
             SwingUtilities.invokeLater(() -> {
-                logger.info("Calling updateView on TabelCRRTController.");
                 tabelController.updateView(cprNr);
                 tabelController.getView().getTable().revalidate();
                 tabelController.getView().getTable().repaint();

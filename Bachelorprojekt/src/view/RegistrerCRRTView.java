@@ -13,7 +13,7 @@ public class RegistrerCRRTView {
     private JButton saveButton;
 
     public RegistrerCRRTView() {
-        frame = new JFrame("CRRT Page");
+        frame = new JFrame("CRRT parametre");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 430);
         frame.setLocationRelativeTo(null);
@@ -73,18 +73,29 @@ public class RegistrerCRRTView {
         textField.setFont(new Font("Arial", Font.PLAIN, 18));
         Dimension size = new Dimension(120, 30);
         textField.setPreferredSize(size);
-        textField.setMinimumSize(size);
-        textField.setMaximumSize(size);
 
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != '.') {
-                    e.consume();
+                String text = textField.getText();
+
+                if (Character.isDigit(c) || c == '\b') {
+                    return; // allow digits and backspace
                 }
+
+                if (c == '.' && !text.contains(".")) {
+                    return; // allow one dot
+                }
+
+                if (c == '-' && text.isEmpty()) {
+                    return; // allow minus only as first character
+                }
+
+                e.consume(); // block everything else
             }
         });
+
         return textField;
     }
 

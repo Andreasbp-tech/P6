@@ -80,11 +80,19 @@ public class RegistrerCitratmetabolismeView {
                 char c = e.getKeyChar();
                 String text = textField.getText();
 
-                if (!Character.isDigit(c) && c != '.' && c != '\b') {
-                    e.consume(); // ikke tal, komma eller backspace
-                } else if (c == ',' && text.contains(",")) {
-                    e.consume(); // kun ét komma tilladt
+                if (Character.isDigit(c) || c == '\b') {
+                    return; // allow digits and backspace
                 }
+
+                if (c == '.' && !text.contains(".")) {
+                    return; // allow one dot
+                }
+
+                if (c == '-' && text.isEmpty()) {
+                    return; // allow minus only as first character
+                }
+
+                e.consume(); // block everything else
             }
         });
 
