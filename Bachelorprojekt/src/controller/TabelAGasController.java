@@ -4,10 +4,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import model.TabelAGasModel;
 import view.TabelAGasView;
+import model.NormalvaerdiCheck;
 
 public class TabelAGasController {
     private TabelAGasModel model;
     private TabelAGasView view;
+    private NormalvaerdiCheck normalvaerdiCheck = new NormalvaerdiCheck();
 
     public TabelAGasController(TabelAGasModel model, TabelAGasView view) {
         this.model = model;
@@ -32,9 +34,18 @@ public class TabelAGasController {
         }
 
         // Tilføj data-rækker (pH, BE, osv.)
-        for (Object[] row : model.getData()) {
+        Object[][] data = model.getData();
+        for (Object[] row : data) {
             tableModel.addRow(row);
         }
+
+        // Udtræk parameternavne og analyser outliers
+        String[] parametre = new String[data.length];
+        for (int i = 0; i < data.length; i++) {
+            parametre[i] = data[i][0].toString();
+        }
+        boolean[][] outliers = normalvaerdiCheck.analyserDataNormalvardi(data);
+        view.setOutlierMatrix(outliers);
 
         // Justér første kolonnebredde
         TableColumn firstColumn = view.getTable().getColumnModel().getColumn(0);
@@ -45,5 +56,4 @@ public class TabelAGasController {
         view.getTable().revalidate();
         view.getTable().repaint();
     }
-
 }

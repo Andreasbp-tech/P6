@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class TabelAGasView {
     private JPanel tablePanel;
     private JTable table;
+    private boolean[][] outlierMatrix;
 
     public TabelAGasView() {
         tablePanel = new JPanel(new BorderLayout());
@@ -18,20 +19,29 @@ public class TabelAGasView {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
-                Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // Skiftende baggrund
-                cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+                // Standard tekstfarve og baggrund
+                setForeground(Color.BLACK);
+                setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+
+                // Tjek for outlier og farv teksten rød
+                if (column > 0 && outlierMatrix != null
+                        && row < outlierMatrix.length && column < outlierMatrix[row].length) {
+                    if (outlierMatrix[row][column]) {
+                        setForeground(Color.RED); // Kun tekst bliver rød
+                    }
+                }
 
                 // Justering og font
                 if (column == 0) {
-                    setHorizontalAlignment(LEFT); // Første kolonne venstrejusteret
-                    cell.setFont(cell.getFont().deriveFont(Font.BOLD));
+                    setHorizontalAlignment(LEFT);
+                    setFont(getFont().deriveFont(Font.BOLD));
                 } else {
-                    setHorizontalAlignment(CENTER); // Øvrige kolonner centreret
+                    setHorizontalAlignment(CENTER);
                 }
 
-                return cell;
+                return this;
             }
         });
 
@@ -47,5 +57,9 @@ public class TabelAGasView {
 
     public JTable getTable() {
         return table;
+    }
+
+    public void setOutlierMatrix(boolean[][] matrix) {
+        this.outlierMatrix = matrix;
     }
 }

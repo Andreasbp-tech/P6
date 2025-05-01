@@ -20,7 +20,7 @@ public class TabelBlodproveModel {
         timestamps = new ArrayList<>();
         dates = new ArrayList<>();
         List<Object[]> dataList = new ArrayList<>();
-        String[] rowNames = { "Total Ca", "Kreatinin", "Carbamid", "Kalium", "Infektionstal", "Calcium Ratio" };
+        String[] rowNames = { "TotalCa", "Kreatinin", "Carbamid", "Kalium", "Infektionstal", "CalciumRatio" };
 
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -49,12 +49,12 @@ public class TabelBlodproveModel {
 
             int colIndex = timestamps.size();
             while (rs.next()) {
-                data[0][colIndex] = rs.getDouble("totalCa");
-                data[1][colIndex] = rs.getDouble("kreatinin");
-                data[2][colIndex] = rs.getDouble("carbamid");
-                data[3][colIndex] = rs.getDouble("kalium");
-                data[4][colIndex] = rs.getDouble("infektionstal");
-                data[5][colIndex] = rs.getDouble("calciumratio");
+                data[0][colIndex] = rs.getDouble("TotalCa");
+                data[1][colIndex] = rs.getDouble("Kreatinin");
+                data[2][colIndex] = rs.getDouble("Carbamid");
+                data[3][colIndex] = rs.getDouble("Kalium");
+                data[4][colIndex] = rs.getDouble("Infektionstal");
+                data[5][colIndex] = rs.getDouble("CalciumRatio");
                 colIndex--;
             }
 

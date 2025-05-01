@@ -1,5 +1,6 @@
 package controller;
 
+import model.NormalvaerdiCheck;
 import model.TabelBlodproveModel;
 import view.TabelBlodproveView;
 
@@ -9,20 +10,25 @@ import javax.swing.table.TableColumn;
 public class TabelBlodproveController {
     private TabelBlodproveModel model;
     private TabelBlodproveView view;
+    private NormalvaerdiCheck normalvaerdiCheck;
 
     public TabelBlodproveController(TabelBlodproveModel model, TabelBlodproveView view) {
         this.model = model;
         this.view = view;
+        this.normalvaerdiCheck = new NormalvaerdiCheck();
     }
 
     public void updateView(String cprNr) {
         model.fetchData(cprNr);
 
+        Object[][] data = model.getData();
+        boolean[][] outlierMatrix = normalvaerdiCheck.analyserDataNormalvardi(data);
+
         DefaultTableModel tableModel = (DefaultTableModel) view.getTable().getModel();
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
 
-        // Tilføj tom første kolonne
+        // Første kolonne: tom
         tableModel.addColumn("");
 
         // Tilføj kolonner med tidspunkt + dato i to linjer
@@ -33,8 +39,8 @@ public class TabelBlodproveController {
             tableModel.addColumn(header);
         }
 
-        // Tilføj data-rækker (hæmoglobin, natrium, osv.)
-        for (Object[] row : model.getData()) {
+        // Tilføj rækker med data
+        for (Object[] row : data) {
             tableModel.addRow(row);
         }
 
@@ -43,8 +49,9 @@ public class TabelBlodproveController {
         firstColumn.setMinWidth(100);
         firstColumn.setMaxWidth(100);
 
+        view.setOutlierMatrix(outlierMatrix);
+
         view.getTable().revalidate();
         view.getTable().repaint();
     }
-
 }
