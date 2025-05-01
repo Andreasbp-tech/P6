@@ -15,19 +15,15 @@ public class MainPageController {
 
         model.loadPatientData(model.getValgtStue());
 
-        // Instantiate GenereltController and add its view to the main page
+        // Generelt
         GenereltController genereltController = new GenereltController(model.getValgtStue(), model);
         view.addPanel(genereltController.getView().getPanel(), "Generelt");
 
-        ProvesvarController provesvarController = new ProvesvarController(model.getCprNr());
+        // Prøvesvar
+        ProvesvarController provesvarController = new ProvesvarController(model.getValgtStue(), model);
         view.addPanel(provesvarController.getView().getMainPanel(), "Prøvesvar");
 
-        /*
-         * ProvesvarPage provesvarPage = new ProvesvarPage();
-         * view.addPanel(provesvarPage.createPanel(model.getCprNr(),
-         * model.getValgtStue()), "Prøvesvar");
-         */
-
+        // Trends
         view.addPanel(TrendsPage.createPanel(model.getValgtStue()), "Trends");
 
         view.getGenereltButton().addActionListener(e -> {
