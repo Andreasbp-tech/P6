@@ -9,6 +9,7 @@ import java.awt.*;
 public class TabelCRRTView {
     private JPanel tablePanel;
     private JTable table;
+    private boolean[][] outlierMatrix;
 
     public TabelCRRTView() {
         tablePanel = new JPanel(new BorderLayout());
@@ -21,15 +22,19 @@ public class TabelCRRTView {
                     boolean hasFocus, int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // Skiftende baggrund
+                // Standard baggrund
                 cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
 
-                // Justering og font
                 if (column == 0) {
-                    setHorizontalAlignment(LEFT); // Første kolonne venstrejusteret
+                    setHorizontalAlignment(LEFT);
                     cell.setFont(cell.getFont().deriveFont(Font.BOLD));
                 } else {
-                    setHorizontalAlignment(CENTER); // Øvrige kolonner centreret
+                    setHorizontalAlignment(CENTER);
+                    if (outlierMatrix != null && row < outlierMatrix.length && column < outlierMatrix[row].length) {
+                        if (outlierMatrix[row][column]) {
+                            cell.setBackground(Color.PINK);
+                        }
+                    }
                 }
 
                 return cell;
@@ -49,4 +54,9 @@ public class TabelCRRTView {
     public JTable getTable() {
         return table;
     }
+
+    public void setOutlierMatrix(boolean[][] outlierMatrix) {
+        this.outlierMatrix = outlierMatrix;
+    }
+
 }
