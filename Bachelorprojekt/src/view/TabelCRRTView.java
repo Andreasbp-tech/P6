@@ -3,7 +3,6 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 
 public class TabelCRRTView {
@@ -25,15 +24,21 @@ public class TabelCRRTView {
                 // Standard baggrund
                 cell.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
 
+                // Sæt tekstfarve til sort som standard
+                cell.setForeground(Color.BLACK);
+
                 if (column == 0) {
                     setHorizontalAlignment(LEFT);
                     cell.setFont(cell.getFont().deriveFont(Font.BOLD));
                 } else {
                     setHorizontalAlignment(CENTER);
-                    if (outlierMatrix != null && row < outlierMatrix.length && column < outlierMatrix[row].length) {
-                        if (outlierMatrix[row][column]) {
-                            cell.setBackground(Color.PINK);
-                        }
+
+                    // Hvis outlierMatrix markerer denne celle som outlier → rød tekst
+                    if (outlierMatrix != null
+                            && row < outlierMatrix.length
+                            && column < outlierMatrix[row].length
+                            && outlierMatrix[row][column]) {
+                        cell.setForeground(Color.RED);
                     }
                 }
 
@@ -58,5 +63,4 @@ public class TabelCRRTView {
     public void setOutlierMatrix(boolean[][] outlierMatrix) {
         this.outlierMatrix = outlierMatrix;
     }
-
 }
