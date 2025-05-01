@@ -39,19 +39,28 @@ public class NormalvaerdierModel {
     }
 
     public boolean isValueNormal(String parameterName, double value) {
-        double[] range = ranges.get(parameterName);
-        if (range == null) {
-            throw new IllegalArgumentException("Ukendt parameter: " + parameterName);
-        }
-        return value >= range[0] && value <= range[1];
-    }
+        parameterName = parameterName.trim(); // sikkerhed
 
-    public boolean isValueNormalVaesker(String parameterName, double value) {
         double[] range = ranges.get(parameterName);
         if (range == null) {
             throw new IllegalArgumentException("Ukendt parameter: " + parameterName);
         }
-        return value == 0 || (value >= range[0] && value <= range[1]);
+
+        // Tjek om kaldet kommer fra TabelCitratmetabolismeController
+        boolean calledFromCitrat = false;
+        for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
+            if (elem.getClassName().contains("TabelCitratmetabolismeController")) {
+                calledFromCitrat = true;
+                break;
+            }
+        }
+
+        // Hvis kaldt fra Citrat-controller: accepter også 0 som normalt
+        if (calledFromCitrat) {
+            return value == 0 || (value >= range[0] && value <= range[1]);
+        } else {
+            return value >= range[0] && value <= range[1];
+        }
     }
 
     // Optional: allow updating normal ranges dynamically

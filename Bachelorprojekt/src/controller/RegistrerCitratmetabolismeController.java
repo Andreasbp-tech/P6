@@ -46,7 +46,7 @@ public class RegistrerCitratmetabolismeController {
             // Tjek for normalværdi-afvigelser på heparin
             for (int i = 2; i < 3; i++) {
                 double parsedValue = Double.parseDouble(values[i]);
-                if (!normalvaerdierModel.isValueNormalVaesker(parameterNames[i], parsedValue)) {
+                if (!normalvaerdierModel.isValueNormal(parameterNames[i], parsedValue)) {
                     double[] range = normalvaerdierModel.getRange(parameterNames[i]);
                     warningMessage.append(String.format("%s er udenfor standardoser (0 eller %.2f).\n",
                             parameterNames[i], range[1]));
