@@ -17,7 +17,7 @@ public class NormalvaerdiCheck {
      * true = værdi uden for normalområde.
      * false = værdi indenfor normalområde.
      */
-    public boolean[][] analyserCRRTData(Object[][] data) {
+    public boolean[][] analyserDataNormalvardi(Object[][] data) {
         int rows = data.length;
         int cols = data[0].length;
         boolean[][] outliers = new boolean[rows][cols];
@@ -39,7 +39,7 @@ public class NormalvaerdiCheck {
     }
 
     public void printOutliers(Object[][] data, List<String> timestamps, String[] parameterNames) {
-        boolean[][] outliers = analyserCRRTData(data);
+        boolean[][] outliers = analyserDataNormalvardi(data);
 
         for (int row = 0; row < outliers.length; row++) {
             for (int col = 1; col < outliers[row].length; col++) { // start from 1 to skip parameter name

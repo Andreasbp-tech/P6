@@ -27,7 +27,7 @@ public class TabelCRRTController {
 
         // Tjek for normalværdier
         NormalvaerdiCheck check = new NormalvaerdiCheck();
-        boolean[][] outliers = check.analyserCRRTData(model.getData());
+        boolean[][] outliers = check.analyserDataNormalvardi(model.getData());
         view.setOutlierMatrix(outliers); // sørg for at TabelCRRTView har denne metode
 
         DefaultTableModel tableModel = new DefaultTableModel();
