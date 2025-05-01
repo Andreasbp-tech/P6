@@ -23,32 +23,29 @@ public class TabelCitratmetabolismeController {
         DefaultTableModel tableModel = new DefaultTableModel();
         view.getTable().setModel(tableModel);
 
-        // Tilføj kolonner
-        tableModel.addColumn(""); // Første kolonne - tom
-        for (String timestamp : model.getTimestamps()) {
-            tableModel.addColumn(timestamp);
+        // Tilføj tom første kolonne
+        tableModel.addColumn("");
+
+        // Tilføj kolonneoverskrifter med timestamp + dato
+        for (int i = 0; i < model.getTimestamps().size(); i++) {
+            String ts = model.getTimestamps().get(i);
+            String date = model.getDates().get(i);
+            String header = "<html><center>" + ts + "<br>" + date + "</center></html>";
+            tableModel.addColumn(header);
         }
 
-        // Første række: Datoer
-        Object[] dateRow = new Object[model.getTimestamps().size() + 1];
-        dateRow[0] = "";
-        for (int i = 0; i < model.getDates().size(); i++) {
-            dateRow[i + 1] = model.getDates().get(i);
-        }
-        tableModel.addRow(dateRow);
-
-        // Tilføj data rækker
+        // Tilføj data-rækker
         for (Object[] row : model.getData()) {
             tableModel.addRow(row);
         }
 
-        // Set column width for the first column
+        // Justér første kolonne
         TableColumn firstColumn = view.getTable().getColumnModel().getColumn(0);
         firstColumn.setPreferredWidth(100);
         firstColumn.setMinWidth(100);
         firstColumn.setMaxWidth(100);
 
-        // Refresh table view
+        // Refresh
         view.getTable().revalidate();
         view.getTable().repaint();
     }

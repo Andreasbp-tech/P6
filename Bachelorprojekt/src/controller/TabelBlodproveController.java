@@ -22,21 +22,18 @@ public class TabelBlodproveController {
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
 
-        // Tilføj tom kolonne + tidspunkter
+        // Tilføj tom første kolonne
         tableModel.addColumn("");
-        for (String ts : model.getTimestamps()) {
-            tableModel.addColumn(ts);
+
+        // Tilføj kolonner med tidspunkt + dato i to linjer
+        for (int i = 0; i < model.getTimestamps().size(); i++) {
+            String ts = model.getTimestamps().get(i);
+            String date = model.getDates().get(i);
+            String header = "<html><center>" + ts + "<br>" + date + "</center></html>";
+            tableModel.addColumn(header);
         }
 
-        // Tilføj datorække
-        Object[] dateRow = new Object[model.getTimestamps().size() + 1];
-        dateRow[0] = "";
-        for (int i = 0; i < model.getDates().size(); i++) {
-            dateRow[i + 1] = model.getDates().get(i);
-        }
-        tableModel.addRow(dateRow);
-
-        // Tilføj data
+        // Tilføj data-rækker (hæmoglobin, natrium, osv.)
         for (Object[] row : model.getData()) {
             tableModel.addRow(row);
         }
@@ -49,4 +46,5 @@ public class TabelBlodproveController {
         view.getTable().revalidate();
         view.getTable().repaint();
     }
+
 }

@@ -29,17 +29,15 @@ public class TabelCRRTController {
 
         // Tilføj kolonner
         tableModel.addColumn(""); // Første kolonne - tom
-        for (String timestamp : model.getTimestamps()) {
-            tableModel.addColumn(timestamp);
-        }
 
-        // Første række: Datoer
-        Object[] dateRow = new Object[model.getTimestamps().size() + 1];
-        dateRow[0] = "";
-        for (int i = 0; i < model.getDates().size(); i++) {
-            dateRow[i + 1] = model.getDates().get(i);
+        for (int i = 0; i < model.getTimestamps().size(); i++) {
+            String timestamp = model.getTimestamps().get(i);
+            String date = model.getDates().get(i);
+
+            // Brug HTML til at lave to linjer i én celle
+            String header = "<html><center>" + timestamp + "<br>" + date + "</center></html>";
+            tableModel.addColumn(header);
         }
-        tableModel.addRow(dateRow);
 
         // Tilføj data rækker
         for (Object[] row : model.getData()) {

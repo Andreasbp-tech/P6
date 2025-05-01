@@ -20,26 +20,23 @@ public class TabelAGasController {
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
 
-        // Add columns: blank + timestamps
+        // Første kolonne: tom
         tableModel.addColumn("");
-        for (String ts : model.getTimestamps()) {
-            tableModel.addColumn(ts);
+
+        // Tilføj kolonneoverskrifter med tidspunkt + dato (HTML = to linjer)
+        for (int i = 0; i < model.getTimestamps().size(); i++) {
+            String ts = model.getTimestamps().get(i);
+            String date = model.getDates().get(i);
+            String header = "<html><center>" + ts + "<br>" + date + "</center></html>";
+            tableModel.addColumn(header);
         }
 
-        // Add date row
-        Object[] dateRow = new Object[model.getTimestamps().size() + 1];
-        dateRow[0] = "";
-        for (int i = 0; i < model.getDates().size(); i++) {
-            dateRow[i + 1] = model.getDates().get(i);
-        }
-        tableModel.addRow(dateRow);
-
-        // Add data rows
+        // Tilføj data-rækker (pH, BE, osv.)
         for (Object[] row : model.getData()) {
             tableModel.addRow(row);
         }
 
-        // Fix first column width
+        // Justér første kolonnebredde
         TableColumn firstColumn = view.getTable().getColumnModel().getColumn(0);
         firstColumn.setPreferredWidth(100);
         firstColumn.setMinWidth(100);
@@ -48,4 +45,5 @@ public class TabelAGasController {
         view.getTable().revalidate();
         view.getTable().repaint();
     }
+
 }
