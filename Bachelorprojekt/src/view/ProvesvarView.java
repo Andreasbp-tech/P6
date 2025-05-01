@@ -40,20 +40,23 @@ public class ProvesvarView {
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         // A-gas sektion
+
+    }
+
+    public void addAgasTablePanel(JPanel agasPanel) {
         agasSection = new JPanel(new BorderLayout());
+        agasSection.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0)); // Øger afstand fra top
         agasLabel = new JLabel("A-gas og maskinprøver", SwingConstants.CENTER);
         agasLabel.setFont(new Font("Arial", Font.BOLD, 16));
         agasSection.add(agasLabel, BorderLayout.NORTH);
         mainPanel.add(agasSection, BorderLayout.CENTER);
-    }
-
-    public void addAgasTablePanel(JPanel agasPanel) {
         agasPanel.setPreferredSize(new Dimension(800, 400));
         agasSection.add(agasPanel, BorderLayout.CENTER);
     }
 
     public void addBlodprovePanel(JPanel blodPanel) {
         blodproveSection = new JPanel(new BorderLayout());
+        blodproveSection.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0)); // Øger afstand fra agas og bund
         blodproveLabel = new JLabel("Blodprøver", SwingConstants.CENTER);
         blodproveLabel.setFont(new Font("Arial", Font.BOLD, 16));
         blodproveSection.add(blodproveLabel, BorderLayout.NORTH);
