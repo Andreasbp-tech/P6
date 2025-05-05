@@ -13,7 +13,7 @@ public class RegistrerCRRTView {
     private JButton saveButton;
 
     public RegistrerCRRTView() {
-        frame = new JFrame("CRRT parametre");
+        frame = new JFrame("CRRT indstillinger");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 430);
         frame.setLocationRelativeTo(null);
@@ -22,7 +22,7 @@ public class RegistrerCRRTView {
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
 
-        crrtLabel = new JLabel("Indtast CRRT-parametre", SwingConstants.CENTER);
+        crrtLabel = new JLabel("Indtast CRRT-indstillinger", SwingConstants.CENTER);
         crrtLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         GridBagConstraints gbc = new GridBagConstraints();
