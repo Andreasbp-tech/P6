@@ -35,6 +35,7 @@ public class GenereltController {
 
         // Show registration popup
         view.getRegistrerParameterButton().addActionListener(e -> {
+
             ParameterPopupView popupView = new ParameterPopupView();
             TabelCRRTController tcCtrl = view.getTabelCRRTController();
             TabelCitratmetabolismeController citratCtrl = view.getTabelCitratmetabolismeController();

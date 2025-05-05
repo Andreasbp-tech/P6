@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import model.TabelCitratmetabolismeModel;
-import model.NormalvaerdiCheck;
+import model.NormalvaerdierModel;
 import view.TabelCitratmetabolismeView;
 
 public class TabelCitratmetabolismeController {
@@ -27,8 +27,8 @@ public class TabelCitratmetabolismeController {
         model.fetchData(cprNr);
 
         // 1) Analyse for outliers
-        NormalvaerdiCheck checker = new NormalvaerdiCheck();
-        boolean[][] outliers = checker.analyserDataNormalvardi(model.getData());
+        NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
+        boolean[][] outliers = normalvaerdierModel.analyserDataNormalvaerdi(model.getData(), cprNr);
         view.setOutlierMatrix(outliers);
 
         // 2) Rebuild table model
@@ -58,4 +58,5 @@ public class TabelCitratmetabolismeController {
         view.getTable().revalidate();
         view.getTable().repaint();
     }
+
 }

@@ -2,14 +2,15 @@ package controller;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import model.NormalvaerdierModel;
 import model.TabelAGasModel;
 import view.TabelAGasView;
-import model.NormalvaerdiCheck;
 
 public class TabelAGasController {
     private TabelAGasModel model;
     private TabelAGasView view;
-    private NormalvaerdiCheck normalvaerdiCheck = new NormalvaerdiCheck();
+    private NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
 
     public TabelAGasController(TabelAGasModel model, TabelAGasView view) {
         this.model = model;
@@ -44,7 +45,7 @@ public class TabelAGasController {
         for (int i = 0; i < data.length; i++) {
             parametre[i] = data[i][0].toString();
         }
-        boolean[][] outliers = normalvaerdiCheck.analyserDataNormalvardi(data);
+        boolean[][] outliers = normalvaerdierModel.analyserDataNormalvaerdi(data, cprNr);
         view.setOutlierMatrix(outliers);
 
         // Justér første kolonnebredde

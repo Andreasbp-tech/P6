@@ -1,6 +1,7 @@
 package controller;
 
-import model.NormalvaerdiCheck;
+//import model.NormalvaerdierModel;
+import model.NormalvaerdierModel;
 import model.TabelBlodproveModel;
 import view.TabelBlodproveView;
 
@@ -10,19 +11,19 @@ import javax.swing.table.TableColumn;
 public class TabelBlodproveController {
     private TabelBlodproveModel model;
     private TabelBlodproveView view;
-    private NormalvaerdiCheck normalvaerdiCheck;
+    private NormalvaerdierModel normalvaerdierModel;
 
     public TabelBlodproveController(TabelBlodproveModel model, TabelBlodproveView view) {
         this.model = model;
         this.view = view;
-        this.normalvaerdiCheck = new NormalvaerdiCheck();
+        this.normalvaerdierModel = new NormalvaerdierModel();
     }
 
     public void updateView(String cprNr) {
         model.fetchData(cprNr);
 
         Object[][] data = model.getData();
-        boolean[][] outlierMatrix = normalvaerdiCheck.analyserDataNormalvardi(data);
+        boolean[][] outlierMatrix = normalvaerdierModel.analyserDataNormalvaerdi(data, cprNr);
 
         DefaultTableModel tableModel = (DefaultTableModel) view.getTable().getModel();
         tableModel.setRowCount(0);

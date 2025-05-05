@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import utilities.DatabaseConnection;
+import model.ValgStueModel;
 
 public class NormalvaerdierModel {
     private Map<String, double[]> ranges;
+    private final Map<String, double[]> latestValuesCache = new HashMap<>();
+    ValgStueModel valgStueModel = new ValgStueModel();
 
     public NormalvaerdierModel() {
         ranges = new HashMap<>();
@@ -39,31 +42,49 @@ public class NormalvaerdierModel {
     }
 
     public boolean isValueNormal(String parameterName, double value) {
-        parameterName = parameterName.trim(); // sikkerhed
+        parameterName = parameterName.trim();
 
         double[] range = ranges.get(parameterName);
         if (range == null) {
             throw new IllegalArgumentException("Ukendt parameter: " + parameterName);
         }
+        return value >= range[0] && value <= range[1];
+    }
 
-        // Tjek om kaldet kommer fra TabelCitratmetabolismeController
-        boolean calledFromCitrat = false;
+    public boolean isValueNormalVaeske(String parameterName, double nyVaerdi, String cprNr) {
+        parameterName = parameterName.trim();
+
+        boolean calledFromCitratRegistrering = false;
         for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
-            if (elem.getClassName().contains("TabelCitratmetabolismeController")) {
-                calledFromCitrat = true;
+            if (elem.getClassName().contains("TabelCitratmetabolismeController")
+                    || elem.getClassName().contains("RegistrerCitratmetabolismeController")) {
+                calledFromCitratRegistrering = true;
                 break;
             }
         }
 
-        // Hvis kaldt fra Citrat-controller: accepter også 0 som normalt
-        if (calledFromCitrat) {
-            return value == 0 || (value >= range[0] && value <= range[1]);
+        if (calledFromCitratRegistrering) {
+            double[] tidligereVaerdier = latestValuesCache.computeIfAbsent(cprNr, k -> {
+                RegistrerCitratmetabolismeModel citratModel = new RegistrerCitratmetabolismeModel();
+                return citratModel.getLatestValues(k);
+            });
+
+            double tidligereVaerdi = -1;
+
+            if (parameterName.equalsIgnoreCase("Calciumdosis")) {
+                tidligereVaerdi = tidligereVaerdier[0];
+            } else if (parameterName.equalsIgnoreCase("Citratdosis")) {
+                tidligereVaerdi = tidligereVaerdier[1];
+            } else {
+                return isValueNormal(parameterName, nyVaerdi);
+            }
+
+            return isChangeAcceptable(parameterName, nyVaerdi, tidligereVaerdi);
         } else {
-            return value >= range[0] && value <= range[1];
+            return isValueNormal(parameterName, nyVaerdi);
         }
     }
 
-    // Optional: allow updating normal ranges dynamically
     public void updateRange(String parameterName, double min, double max) {
         ranges.put(parameterName, new double[] { min, max });
         saveRangeToDatabase(parameterName, min, max);
@@ -82,5 +103,65 @@ public class NormalvaerdierModel {
             e.printStackTrace();
             throw new RuntimeException("Kunne ikke opdatere normalområde i databasen.");
         }
+    }
+
+    public boolean[][] analyserDataNormalvaerdi(Object[][] data, String cprNr) {
+        int rows = data.length;
+        int cols = data[0].length;
+        boolean[][] outliers = new boolean[rows][cols];
+
+        boolean calledFromCitratRegistrering = false;
+        for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
+            if (elem.getClassName().contains("RegistrerCitratmetabolismeController")) {
+                calledFromCitratRegistrering = true;
+                break;
+            }
+        }
+
+        for (int i = 0; i < rows; i++) {
+            String parameterNavn = data[i][0].toString();
+            Double tidligereVaerdi = null;
+
+            for (int j = 1; j < cols; j++) {
+                Object val = data[i][j];
+                if (val instanceof Number) {
+                    double nyVaerdi = ((Number) val).doubleValue();
+                    boolean erUdenfor;
+
+                    if (calledFromCitratRegistrering) {
+                        erUdenfor = !isValueNormalVaeske(parameterNavn, nyVaerdi, cprNr);
+                    } else {
+                        if (tidligereVaerdi != null) {
+                            erUdenfor = !isChangeAcceptable(parameterNavn, nyVaerdi, tidligereVaerdi);
+                        } else {
+                            erUdenfor = false; // Første værdi antages OK
+                        }
+                        tidligereVaerdi = nyVaerdi;
+                    }
+
+                    outliers[i][j] = erUdenfor;
+                } else {
+                    outliers[i][j] = false;
+                }
+            }
+        }
+        return outliers;
+    }
+
+    private boolean isChangeAcceptable(String parameterName, double ny, double tidligere) {
+        if (parameterName.equalsIgnoreCase("Calciumdosis")) {
+            System.out.println("IsChangeAcceptable: Calcium");
+            return Math.abs(ny - tidligere) < 0.4;
+        } else if (parameterName.equalsIgnoreCase("Citratdosis")) {
+            System.out.println("IsChangeAcceptable: Citrat");
+            return Math.abs(ny - tidligere) < 0.2;
+        } else {
+            System.out.println("IsChangeAcceptable: Else");
+            return isValueNormal(parameterName, ny);
+        }
+    }
+
+    public void clearLatestValuesCache() {
+        latestValuesCache.clear();
     }
 }

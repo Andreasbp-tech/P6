@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import model.TabelCRRTModel;
 import view.TabelCRRTView;
-import model.NormalvaerdiCheck;
+import model.NormalvaerdierModel;
 
 public class TabelCRRTController {
     private TabelCRRTModel model;
@@ -26,8 +26,8 @@ public class TabelCRRTController {
         model.fetchData(cprNr);
 
         // Tjek for normalværdier
-        NormalvaerdiCheck check = new NormalvaerdiCheck();
-        boolean[][] outliers = check.analyserDataNormalvardi(model.getData());
+        NormalvaerdierModel normalvaerdiModel = new NormalvaerdierModel();
+        boolean[][] outliers = normalvaerdiModel.analyserDataNormalvaerdi(model.getData(), cprNr);
         view.setOutlierMatrix(outliers); // sørg for at TabelCRRTView har denne metode
 
         DefaultTableModel tableModel = new DefaultTableModel();
@@ -62,7 +62,6 @@ public class TabelCRRTController {
         for (int i = 0; i < model.getData().length; i++) {
             parameterNames[i] = model.getData()[i][0].toString();
         }
-        check.printOutliers(model.getData(), model.getTimestamps(), parameterNames);
     }
 
 }
