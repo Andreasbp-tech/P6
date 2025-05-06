@@ -67,7 +67,7 @@ public class GenereltView {
 
         // --- CRRT Sektion ---
         JPanel crrtSection = new JPanel(new BorderLayout());
-        JLabel crrtLabel = new JLabel("CRRT-parametre", SwingConstants.CENTER);
+        JLabel crrtLabel = new JLabel("CRRT-indstillinger", SwingConstants.CENTER);
         crrtLabel.setFont(new Font("Arial", Font.BOLD, 16));
         crrtSection.add(crrtLabel, BorderLayout.NORTH);
         TabelCRRTModel tabelModel = new TabelCRRTModel();

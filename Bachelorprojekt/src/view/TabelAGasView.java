@@ -4,13 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import model.BeslutningsstotteModel;
 
 public class TabelAGasView {
     private JPanel tablePanel;
     private JTable table;
     private boolean[][] outlierMatrix;
+    private BeslutningsstotteModel beslutningsstotteModel;
 
     public TabelAGasView() {
+        beslutningsstotteModel = new BeslutningsstotteModel();
+
         tablePanel = new JPanel(new BorderLayout());
         table = new JTable(new DefaultTableModel());
         table.setRowHeight(20);
@@ -29,7 +33,7 @@ public class TabelAGasView {
                 if (column > 0 && outlierMatrix != null
                         && row < outlierMatrix.length && column < outlierMatrix[row].length) {
                     if (outlierMatrix[row][column]) {
-                        setForeground(Color.RED); // Kun tekst bliver rød
+                        setForeground(Color.RED);
                     }
                 }
 
@@ -42,6 +46,64 @@ public class TabelAGasView {
                 }
 
                 return this;
+            }
+        });
+
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int row = table.rowAtPoint(e.getPoint());
+                int col = table.columnAtPoint(e.getPoint());
+
+                if (row >= 0 && col > 0 && outlierMatrix != null) {
+                    if (row < outlierMatrix.length && col < outlierMatrix[row].length) {
+                        if (outlierMatrix[row][col]) {
+                            Object pH = table.getValueAt(0, col);
+                            Object BE = table.getValueAt(1, col);
+                            Object HCO3 = table.getValueAt(2, col);
+                            Object SystemiskCa = table.getValueAt(3, col);
+                            Object PostCa = table.getValueAt(4, col);
+
+                            if (row == 0 || row == 2) {
+                                showAcidBaseDialog(pH, BE, HCO3);
+                            } else if (row == 3) {
+                                showSystemicCaDialog(SystemiskCa);
+                            } else if (row == 4) {
+                                showPostCaDialog(PostCa);
+                            }
+                        }
+                    }
+                }
+            }
+
+            private void showSystemicCaDialog(Object systemiskCa) {
+                String interpretation = beslutningsstotteModel.analyserSystemiskCa(systemiskCa);
+                String message = String.format(
+                        "<html><b>Systemisk Calcium:</b> %s mmol/l<br><br>" +
+                                "<b>Forslag til justering:</b><br><font color='red'>%s</font></html>",
+                        valueString(systemiskCa), interpretation.replace("\n", "<br>"));
+                JOptionPane.showMessageDialog(table, message, "Beslutningsstøtte", JOptionPane.WARNING_MESSAGE);
+            }
+
+            private void showPostCaDialog(Object postfilterCa) {
+                String interpretation = beslutningsstotteModel.analyserPostfilterCa(postfilterCa);
+                String message = String.format(
+                        "<html><b>Postfilter Calcium:</b> %s mmol/l<br><br>" +
+                                "<b>Forslag til justering:</b><br><font color='red'>%s</font></html>",
+                        valueString(postfilterCa), interpretation.replace("\n", "<br>"));
+                JOptionPane.showMessageDialog(table, message, "Beslutningsstøtte", JOptionPane.WARNING_MESSAGE);
+            }
+
+            private void showAcidBaseDialog(Object pH, Object BE, Object HCO3) {
+                String interpretation = beslutningsstotteModel.analyserAcidBase(pH, BE, HCO3);
+                String message = String.format(
+                        "Syre-base uregelmæssighed detekteret:\n\npH: %s\nBE: %s\nHCO₃⁻: %s\n \n Forslag til justering: \n%s",
+                        valueString(pH), valueString(BE), valueString(HCO3), interpretation);
+                JOptionPane.showMessageDialog(table, message, "Syre-base evaluering", JOptionPane.WARNING_MESSAGE);
+            }
+
+            private String valueString(Object obj) {
+                return obj != null ? obj.toString() : "N/A";
             }
         });
 

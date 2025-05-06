@@ -176,6 +176,8 @@ import java.util.HashMap;
 import java.util.Map;
 import utilities.DatabaseConnection;
 import model.ValgStueModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NormalvaerdierModel {
     private Map<String, double[]> ranges;
@@ -294,7 +296,7 @@ public class NormalvaerdierModel {
 
         for (int i = 0; i < rows; i++) {
             String parameterNavn = data[i][0].toString();
-            Double tidligereVaerdi = null;
+            List<Double> tidligereVaerdier = new ArrayList<>();
 
             for (int j = 1; j < cols; j++) {
                 Object val = data[i][j];
@@ -305,12 +307,13 @@ public class NormalvaerdierModel {
                     if (calledFromCitratRegistrering) {
                         erUdenfor = !isValueNormalVaeske(parameterNavn, nyVaerdi, cprNr);
                     } else {
-                        if (tidligereVaerdi != null) {
+                        if (!tidligereVaerdier.isEmpty()) {
+                            double tidligereVaerdi = tidligereVaerdier.get(tidligereVaerdier.size() - 1);
                             erUdenfor = !isChangeAcceptable(parameterNavn, nyVaerdi, tidligereVaerdi);
                         } else {
                             erUdenfor = false; // Første værdi antages OK
                         }
-                        tidligereVaerdi = nyVaerdi; // Opdater tidligereVaerdi efter sammenligning
+                        tidligereVaerdier.add(nyVaerdi); // Tilføj ny værdi til listen over tidligere værdier
                     }
 
                     outliers[i][j] = erUdenfor;
