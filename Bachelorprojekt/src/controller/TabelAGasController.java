@@ -78,7 +78,7 @@ public class TabelAGasController {
 
             private void showAcidBaseDialog(Object pH, Object BE, Object HCO3, Double kreatinin, Double carbamid) {
                 // Brug kreatinin og carbamid i analysen (hvis nødvendigt)
-                String interpretation = beslutningsstotteModel.analyserAcidBase(pH, BE, HCO3);
+                String interpretation = beslutningsstotteModel.analyserAcidBase(pH, BE, HCO3, kreatinin, carbamid);
                 JOptionPane.showMessageDialog(view.getTable(),
                         "Syre-base uregelmæssighed:\n\npH: " + value(pH) + "\nBE: " + value(BE) + "\nHCO₃⁻: "
                                 + value(HCO3)

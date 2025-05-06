@@ -36,15 +36,25 @@ public class BeslutningsstotteModel {
         return new Double[] { kreatinin, carbamid };
     }
 
-    public String analyserAcidBase(Object pH, Object BE, Object HCO3) {
+    public String analyserAcidBase(Object pH, Object BE, Object HCO3, Object kreatinin, Object carbamid) {
         try {
             double pHVal = Double.parseDouble(pH.toString());
             double hco3Val = Double.parseDouble(HCO3.toString());
+            double kreatininVal = Double.parseDouble(kreatinin.toString());
+            double carbamidVal = Double.parseDouble(carbamid.toString());
 
-            if (pHVal < 7.35 || hco3Val < 22) // OBS!!! Disse værdier skal hentes fra databasen i stedet
-                return "Acidose mistænkes – lav pH eller lav HCO₃.";
-            if (pHVal > 7.45 || hco3Val > 26)
-                return "Alkalose mistænkes – høj pH eller høj HCO₃.";
+            boolean acidose = pHVal < 7.35 || hco3Val < 22;
+            boolean alkalose = pHVal > 7.45 || hco3Val > 26;
+            boolean nyresvigt = kreatininVal > 105 || carbamidVal > 8.1;
+
+            if (acidose && !nyresvigt)
+                return "Acidose mistænkes – lav pH eller HCO₃, normal kreatinin og carbamid.\n➤ Reducer dialysatflow (500 ml/t)";
+            if (acidose && nyresvigt)
+                return "Acidose mistænkes – lav pH eller HCO₃, forhøjet kreatinin eller carbamid.\n➤ Øg blodflow (10-20 ml/min)";
+            if (alkalose && !nyresvigt)
+                return "Alkalose mistænkes – høj pH eller HCO₃, normal kreatinin og carbamid.\n➤ Reducer blodflow (10-20 ml/min)";
+            if (alkalose && nyresvigt)
+                return "Alkalose mistænkes – høj pH eller HCO₃, forhøjet kreatinin eller carbamid.\n➤ Øg dialysatflow (500 ml/t)";
 
         } catch (Exception e) {
             return "Fejl i acid-base analyse.";
