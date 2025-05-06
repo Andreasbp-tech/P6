@@ -39,30 +39,4 @@ public class RegistrerCRRTModel {
         }
     }
 
-    public boolean isValueNormal(String parameterName, double value) {
-        try {
-            double[] normalRange = getNormalRange(parameterName);
-            double minValue = normalRange[0];
-            double maxValue = normalRange[1];
-            return value >= minValue && value <= maxValue;
-        } catch (SQLException e) {
-            logger.severe("Error fetching normal range for " + parameterName + ": " + e.getMessage());
-            return false;
-        }
-    }
-
-    private double[] getNormalRange(String parameterName) throws SQLException {
-        String query = "SELECT min_value, max_value FROM Normalværdier WHERE parameter = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, parameterName);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return new double[] { rs.getDouble("min_value"), rs.getDouble("max_value") };
-            } else {
-                throw new SQLException("No normal range found for " + parameterName);
-            }
-        }
-    }
 }

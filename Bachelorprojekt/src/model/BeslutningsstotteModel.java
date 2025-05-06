@@ -38,7 +38,6 @@ public class BeslutningsstotteModel {
         try {
             double pHVal = Double.parseDouble(pH.toString());
             if (pHVal < 7.35)
-
                 return "Acidose mistænkes – lav pH.";
             if (pHVal > 7.45)
                 return "Alkalose mistænkes – høj pH.";

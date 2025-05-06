@@ -14,6 +14,7 @@ public class TabelAGasModel {
     private List<String> timestamps;
     private List<String> dates;
     private Object[][] data;
+    private boolean[][] outlierMatrix;
 
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
@@ -78,5 +79,13 @@ public class TabelAGasModel {
 
     public Object[][] getData() {
         return data;
+    }
+
+    public boolean[][] getOutlierMatrix() {
+        return outlierMatrix;
+    }
+
+    public void setOutlierMatrix(boolean[][] matrix) {
+        this.outlierMatrix = matrix;
     }
 }
