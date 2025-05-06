@@ -29,7 +29,7 @@ public class ProvesvarController {
         // A-gas
         agasModel = new TabelAGasModel();
         agasView = new TabelAGasView();
-        agasController = new TabelAGasController(agasModel, agasView);
+        agasController = new TabelAGasController(agasModel, agasView, model);
         agasController.updateView(model.getCprNr());
         provesvarView.addAgasTablePanel(agasView.getTablePanel());
 

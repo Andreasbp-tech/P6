@@ -100,7 +100,7 @@ public class GenereltView {
         agasSection.add(agasLabel, BorderLayout.NORTH);
         TabelAGasModel agasModel = new TabelAGasModel();
         TabelAGasView agasView = new TabelAGasView();
-        TabelAGasController agasCtrl = new TabelAGasController(agasModel, agasView);
+        TabelAGasController agasCtrl = new TabelAGasController(agasModel, agasView, model);
         agasCtrl.updateView(model.getCprNr());
         JPanel agasTablePanel = agasView.getTablePanel();
         agasTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.35)));

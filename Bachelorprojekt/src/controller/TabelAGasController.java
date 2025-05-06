@@ -4,6 +4,7 @@ import model.NormalvaerdierModel;
 import model.TabelAGasModel;
 import model.BeslutningsstotteModel;
 import view.TabelAGasView;
+import model.ValgStueModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,11 +17,14 @@ public class TabelAGasController {
     private TabelAGasView view;
     private NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
     private BeslutningsstotteModel beslutningsstotteModel = new BeslutningsstotteModel();
+    private ValgStueModel valgStueModel;
     private String valgtDato;
+    private String cprNr; // Gem CPR-nummeret her
 
-    public TabelAGasController(TabelAGasModel model, TabelAGasView view) {
+    public TabelAGasController(TabelAGasModel model, TabelAGasView view, ValgStueModel valgStueModel) {
         this.model = model;
         this.view = view;
+        this.valgStueModel = valgStueModel;
         addMouseListener();
     }
 
@@ -47,25 +51,38 @@ public class TabelAGasController {
                         }
                     }
 
+                    // Hent CPR-nummer fra ValgStueModel
+                    cprNr = valgStueModel.getCprNr(); // CPR-nummeret er nu gemt i cprNr
+                    System.out.println("CPR: " + cprNr);
+
+                    // Hent kreatinin og carbamid fra databasen
+                    Double[] resultater = BeslutningsstotteModel.hentKreatininOgCarbamid(cprNr, valgtDato);
+                    Double kreatinin = resultater[0];
+                    Double carbamid = resultater[1];
+
+                    // Vælg hvilken type dialog der skal vises
                     Object pH = view.getTable().getValueAt(0, col);
                     Object BE = view.getTable().getValueAt(1, col);
                     Object HCO3 = view.getTable().getValueAt(2, col);
                     Object systemiskCa = view.getTable().getValueAt(3, col);
                     Object postfilterCa = view.getTable().getValueAt(4, col);
 
+                    // Brug kreatinin og carbamid i analysen
                     switch (row) {
-                        case 0, 2 -> showAcidBaseDialog(pH, BE, HCO3);
+                        case 0, 2 -> showAcidBaseDialog(pH, BE, HCO3, kreatinin, carbamid);
                         case 3 -> showSystemiskCaDialog(systemiskCa);
                         case 4 -> showPostCaDialog(postfilterCa);
                     }
                 }
             }
 
-            private void showAcidBaseDialog(Object pH, Object BE, Object HCO3) {
+            private void showAcidBaseDialog(Object pH, Object BE, Object HCO3, Double kreatinin, Double carbamid) {
+                // Brug kreatinin og carbamid i analysen (hvis nødvendigt)
                 String interpretation = beslutningsstotteModel.analyserAcidBase(pH, BE, HCO3);
                 JOptionPane.showMessageDialog(view.getTable(),
                         "Syre-base uregelmæssighed:\n\npH: " + value(pH) + "\nBE: " + value(BE) + "\nHCO₃⁻: "
                                 + value(HCO3)
+                                + "\nKreatinin: " + value(kreatinin) + "\nCarbamid: " + value(carbamid)
                                 + "\n\n" + interpretation,
                         "Syre-base evaluering", JOptionPane.WARNING_MESSAGE);
             }

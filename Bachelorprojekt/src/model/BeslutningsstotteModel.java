@@ -1,11 +1,11 @@
 package model;
 
-import view.TabelAGasView;
 import utilities.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.NormalvaerdierModel;
 
 public class BeslutningsstotteModel {
 
@@ -19,12 +19,15 @@ public class BeslutningsstotteModel {
 
             stmt.setString(1, cprNr);
             stmt.setString(2, dato + "%"); // f.eks. "2025-05-06%"
+            System.out.println(dato + ", " + cprNr);
             ResultSet rs = stmt.executeQuery();
+            System.out.println(query);
 
             if (rs.next()) {
-                kreatinin = rs.getDouble("Kreatinin");
-                carbamid = rs.getDouble("Carbamid");
+                kreatinin = rs.getDouble("kreatinin");
+                carbamid = rs.getDouble("carbamid");
             }
+            System.out.println("Kreatinin: " + kreatinin + "   Carbamid: " + carbamid);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,17 +37,20 @@ public class BeslutningsstotteModel {
     }
 
     public String analyserAcidBase(Object pH, Object BE, Object HCO3) {
-
         try {
             double pHVal = Double.parseDouble(pH.toString());
-            if (pHVal < 7.35)
-                return "Acidose mistænkes – lav pH.";
-            if (pHVal > 7.45)
-                return "Alkalose mistænkes – høj pH.";
+            double hco3Val = Double.parseDouble(HCO3.toString());
+
+            if (pHVal < 7.35 || hco3Val < 22) // OBS!!! Disse værdier skal hentes fra databasen
+                return "Acidose mistænkes – lav pH eller lav HCO₃.";
+            if (pHVal > 7.45 || hco3Val > 26)
+                return "Alkalose mistænkes – høj pH eller høj HCO₃.";
+
         } catch (Exception e) {
             return "Fejl i acid-base analyse.";
         }
-        return "Normal pH – ingen syre-base forstyrrelse.";
+
+        return "Normal syre-base status.";
     }
 
     public String analyserSystemiskCa(Object systemiskCa) {
@@ -92,5 +98,4 @@ public class BeslutningsstotteModel {
             return "Fejl i postfilter calcium-analyse – kunne ikke tolke værdien.";
         }
     }
-
 }
