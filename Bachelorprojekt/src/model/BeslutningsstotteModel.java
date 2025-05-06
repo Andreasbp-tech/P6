@@ -41,7 +41,7 @@ public class BeslutningsstotteModel {
             double pHVal = Double.parseDouble(pH.toString());
             double hco3Val = Double.parseDouble(HCO3.toString());
 
-            if (pHVal < 7.35 || hco3Val < 22) // OBS!!! Disse værdier skal hentes fra databasen
+            if (pHVal < 7.35 || hco3Val < 22) // OBS!!! Disse værdier skal hentes fra databasen i stedet
                 return "Acidose mistænkes – lav pH eller lav HCO₃.";
             if (pHVal > 7.45 || hco3Val > 26)
                 return "Alkalose mistænkes – høj pH eller høj HCO₃.";
