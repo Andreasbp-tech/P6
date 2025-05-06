@@ -16,7 +16,7 @@ public class TabelAGasController {
     private TabelAGasModel model;
     private TabelAGasView view;
     private NormalvaerdierModel normalvaerdierModel = new NormalvaerdierModel();
-    private BeslutningsstotteModel beslutningsstotteModel = new BeslutningsstotteModel();
+    private BeslutningsstotteModel beslutningsstotteModel = new BeslutningsstotteModel(normalvaerdierModel);
     private ValgStueModel valgStueModel;
     private String valgtDato;
     private String cprNr; // Gem CPR-nummeret her

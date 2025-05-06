@@ -5,9 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.NormalvaerdierModel;
 
 public class BeslutningsstotteModel {
+    private NormalvaerdierModel normalvaerdierModel;
+
+    public BeslutningsstotteModel(NormalvaerdierModel normalvaerdierModel) {
+        this.normalvaerdierModel = normalvaerdierModel;
+    }
 
     public static Double[] hentKreatininOgCarbamid(String cprNr, String dato) {
         String query = "SELECT kreatinin, carbamid FROM Blodprøve WHERE CPR_nr = ? AND tidspunkt LIKE ?";
@@ -19,15 +23,12 @@ public class BeslutningsstotteModel {
 
             stmt.setString(1, cprNr);
             stmt.setString(2, dato + "%"); // f.eks. "2025-05-06%"
-            System.out.println(dato + ", " + cprNr);
             ResultSet rs = stmt.executeQuery();
-            System.out.println(query);
 
             if (rs.next()) {
                 kreatinin = rs.getDouble("kreatinin");
                 carbamid = rs.getDouble("carbamid");
             }
-            System.out.println("Kreatinin: " + kreatinin + "   Carbamid: " + carbamid);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,9 +44,14 @@ public class BeslutningsstotteModel {
             double kreatininVal = Double.parseDouble(kreatinin.toString());
             double carbamidVal = Double.parseDouble(carbamid.toString());
 
-            boolean acidose = pHVal < 7.35 || hco3Val < 22;
-            boolean alkalose = pHVal > 7.45 || hco3Val > 26;
-            boolean nyresvigt = kreatininVal > 105 || carbamidVal > 8.1;
+            double[] kreatininRange = normalvaerdierModel.getRange("Kreatinin");
+            double[] carbamidRange = normalvaerdierModel.getRange("Carbamid");
+            double[] hco3Range = normalvaerdierModel.getRange("HCO3");
+            double[] pHRange = normalvaerdierModel.getRange("pH");
+
+            boolean acidose = pHVal < pHRange[0] || hco3Val < hco3Range[0];
+            boolean alkalose = pHVal > pHRange[1] || hco3Val > hco3Range[1];
+            boolean nyresvigt = kreatininVal > kreatininRange[1] || carbamidVal > carbamidRange[1];
 
             if (acidose && !nyresvigt)
                 return "Acidose mistænkes – lav pH eller HCO₃, normal kreatinin og carbamid.\n➤ Reducer dialysatflow (500 ml/t)";
@@ -76,7 +82,7 @@ public class BeslutningsstotteModel {
                 sb.append("➤ Ingen ændring i Calciumdosis.\n");
             } else if (sysCa >= 1.00 && sysCa <= 1.11) {
                 sb.append("➤ Øg Calciumdosis med 0,2 mmol/l.\n");
-            } else { // sysCa < 1.00
+            } else {
                 sb.append("➤ Øg Calciumdosis med 0,4 mmol/l og informer læge.\n");
             }
 
@@ -99,7 +105,7 @@ public class BeslutningsstotteModel {
                 sb.append("➤ Ingen ændring i citratdosis.\n");
             } else if (postCa >= 0.20 && postCa < 0.25) {
                 sb.append("➤ Reducer citratdosis med 0,1 mmol/l.\n");
-            } else { // postCa < 0.20
+            } else {
                 sb.append("➤ Reducer citratdosis med 0,2 mmol/l og informer læge.\n");
             }
 
