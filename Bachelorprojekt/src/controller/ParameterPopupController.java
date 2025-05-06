@@ -2,22 +2,22 @@ package controller;
 
 import model.NormalvaerdierModel;
 import model.RegistrerCRRTModel;
-import model.RegistrerCitratmetabolismeModel;
+import model.RegistrerVaeskekoncentrationModel;
 import model.ValgStueModel;
 import view.ParameterPopupView;
 import view.RegistrerCRRTView;
-import view.RegistrerCitratmetabolismeView;
+import view.RegistrerVaeskekoncentrationView;
 
 public class ParameterPopupController {
     private ParameterPopupView view;
     private ValgStueModel valgStueModel;
     private TabelCRRTController tabelController;
-    private TabelCitratmetabolismeController citratController;
+    private TabelVaeskekoncentrationController citratController;
 
     public ParameterPopupController(ParameterPopupView view,
             ValgStueModel valgStueModel,
             TabelCRRTController tabelController,
-            TabelCitratmetabolismeController citratController) {
+            TabelVaeskekoncentrationController citratController) {
         this.view = view;
         this.valgStueModel = valgStueModel;
         this.tabelController = tabelController;
@@ -42,11 +42,12 @@ public class ParameterPopupController {
         view.getCitratButton().addActionListener(e -> {
             view.close();
             // Create the model and view for CitratMetabolisme
-            RegistrerCitratmetabolismeModel model = new RegistrerCitratmetabolismeModel();
-            RegistrerCitratmetabolismeView citratView = new RegistrerCitratmetabolismeView();
+            RegistrerVaeskekoncentrationModel model = new RegistrerVaeskekoncentrationModel();
+            RegistrerVaeskekoncentrationView citratView = new RegistrerVaeskekoncentrationView();
             // Pass the NormalvaerdierModel to RegistrerCitratmetabolismeController
-            RegistrerCitratmetabolismeController controller = new RegistrerCitratmetabolismeController(
-                    model, citratView, valgStueModel.getCprNr(), this.citratController, normalvaerdierModel); // Pass NormalvaerdierModel
+            RegistrerVaeskekoncentrationController controller = new RegistrerVaeskekoncentrationController(
+                    model, citratView, valgStueModel.getCprNr(), this.citratController, normalvaerdierModel); // Pass
+                                                                                                              // NormalvaerdierModel
             controller.showView();
         });
 

@@ -5,12 +5,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class TabelCitratmetabolismeView {
+public class TabelVaeskekoncentrationView {
     private JPanel tablePanel;
     private JTable table;
     private boolean[][] outlierMatrix;
 
-    public TabelCitratmetabolismeView() {
+    public TabelVaeskekoncentrationView() {
         tablePanel = new JPanel(new BorderLayout());
         table = new JTable(new DefaultTableModel());
         table.setRowHeight(20);

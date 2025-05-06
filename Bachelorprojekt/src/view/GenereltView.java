@@ -2,12 +2,12 @@ package view;
 
 import controller.TabelAGasController;
 import controller.TabelCRRTController;
-import controller.TabelCitratmetabolismeController;
+import controller.TabelVaeskekoncentrationController;
 import java.awt.*;
 import javax.swing.*;
 import model.TabelAGasModel;
 import model.TabelCRRTModel;
-import model.TabelCitratmetabolismeModel;
+import model.TabelVaeskekoncentrationModel;
 import model.ValgStueModel;
 import utilities.HeaderPanelUtil;
 
@@ -20,7 +20,7 @@ public class GenereltView {
     private JButton seOrdinationerButton;
 
     private TabelCRRTController tabelCRRTController;
-    private TabelCitratmetabolismeController tabelCitratmetabolismeController;
+    private TabelVaeskekoncentrationController tabelCitratmetabolismeController;
 
     public GenereltView(int valgtStue, ValgStueModel model) {
         model.getPatientData(valgtStue);
@@ -84,9 +84,9 @@ public class GenereltView {
         JLabel citratLabel = new JLabel("Væskekoncentrationer", SwingConstants.CENTER);
         citratLabel.setFont(new Font("Arial", Font.BOLD, 16));
         citratSection.add(citratLabel, BorderLayout.NORTH);
-        TabelCitratmetabolismeModel citratModel = new TabelCitratmetabolismeModel();
-        TabelCitratmetabolismeView citratView = new TabelCitratmetabolismeView();
-        this.tabelCitratmetabolismeController = new TabelCitratmetabolismeController(citratModel, citratView);
+        TabelVaeskekoncentrationModel citratModel = new TabelVaeskekoncentrationModel();
+        TabelVaeskekoncentrationView citratView = new TabelVaeskekoncentrationView();
+        this.tabelCitratmetabolismeController = new TabelVaeskekoncentrationController(citratModel, citratView);
         this.tabelCitratmetabolismeController.updateView(model.getCprNr());
         JPanel citratTablePanel = citratView.getTablePanel();
         citratTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.25)));
@@ -134,7 +134,7 @@ public class GenereltView {
         return tabelCRRTController;
     }
 
-    public TabelCitratmetabolismeController getTabelCitratmetabolismeController() {
+    public TabelVaeskekoncentrationController getTabelCitratmetabolismeController() {
         return tabelCitratmetabolismeController;
     }
 }

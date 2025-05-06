@@ -5,14 +5,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
-public class RegistrerCitratmetabolismeView {
+public class RegistrerVaeskekoncentrationView {
     private JFrame frame;
     private JPanel panel;
     private JLabel citratLabel;
     private JTextField[] textFields;
     private JButton saveButton;
 
-    public RegistrerCitratmetabolismeView() {
+    public RegistrerVaeskekoncentrationView() {
         frame = new JFrame("Væskekoncentrationer");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(450, 250); // Øget størrelsen for at rumme heparin feltet

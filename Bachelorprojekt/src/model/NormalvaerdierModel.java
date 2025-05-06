@@ -237,7 +237,7 @@ public class NormalvaerdierModel {
         if (calledFromCitratRegistrering) {
             // Kun hente den seneste værdi for det pågældende CPR-nummer
             double[] tidligereVaerdier = latestValuesCache.computeIfAbsent(cprNr, k -> {
-                RegistrerCitratmetabolismeModel citratModel = new RegistrerCitratmetabolismeModel();
+                RegistrerVaeskekoncentrationModel citratModel = new RegistrerVaeskekoncentrationModel();
                 return citratModel.getLatestValues(k); // Henter kun den nyeste værdi
             });
 

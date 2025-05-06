@@ -4,21 +4,21 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import model.TabelCitratmetabolismeModel;
+import model.TabelVaeskekoncentrationModel;
 import model.NormalvaerdierModel;
-import view.TabelCitratmetabolismeView;
+import view.TabelVaeskekoncentrationView;
 
-public class TabelCitratmetabolismeController {
-    private TabelCitratmetabolismeModel model;
-    private TabelCitratmetabolismeView view;
-    private static final Logger logger = Logger.getLogger(TabelCitratmetabolismeController.class.getName());
+public class TabelVaeskekoncentrationController {
+    private TabelVaeskekoncentrationModel model;
+    private TabelVaeskekoncentrationView view;
+    private static final Logger logger = Logger.getLogger(TabelVaeskekoncentrationController.class.getName());
 
-    public TabelCitratmetabolismeController(TabelCitratmetabolismeModel model, TabelCitratmetabolismeView view) {
+    public TabelVaeskekoncentrationController(TabelVaeskekoncentrationModel model, TabelVaeskekoncentrationView view) {
         this.model = model;
         this.view = view;
     }
 
-    public TabelCitratmetabolismeView getView() {
+    public TabelVaeskekoncentrationView getView() {
         return view;
     }
 

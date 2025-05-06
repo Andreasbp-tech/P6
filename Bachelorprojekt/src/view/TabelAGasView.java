@@ -11,6 +11,7 @@ public class TabelAGasView {
     private JTable table;
     private boolean[][] outlierMatrix;
     private BeslutningsstotteModel beslutningsstotteModel;
+    private String valgtDato;
 
     public TabelAGasView() {
         beslutningsstotteModel = new BeslutningsstotteModel();
@@ -58,6 +59,31 @@ public class TabelAGasView {
                 if (row >= 0 && col > 0 && outlierMatrix != null) {
                     if (row < outlierMatrix.length && col < outlierMatrix[row].length) {
                         if (outlierMatrix[row][col]) {
+                            // ➤ Gem datoen fra kolonneoverskriften
+                            Object headerValue = table.getColumnModel().getColumn(col).getHeaderValue();
+                            if (headerValue != null) {
+                                String headerHtml = headerValue.toString();
+                                String cleanText = headerHtml.replaceAll("<[^>]*>", "").trim();
+
+                                if (cleanText.length() >= 13) {
+                                    String rawDate = cleanText.substring(5, 13); // "06-05-25"
+                                    String[] dateParts = rawDate.split("-");
+                                    if (dateParts.length == 3) {
+                                        String day = dateParts[0];
+                                        String month = dateParts[1];
+                                        String year = "20" + dateParts[2]; // "25" → "2025"
+                                        valgtDato = year + "-" + month + "-" + day;
+                                        System.out.println("Dato: " + valgtDato);
+                                    } else {
+                                        valgtDato = "";
+                                        System.out.println("Dato kunne ikke parses korrekt: " + rawDate);
+                                    }
+                                } else {
+                                    valgtDato = "";
+                                    System.out.println("CleanText for kort: " + cleanText);
+                                }
+                            }
+
                             Object pH = table.getValueAt(0, col);
                             Object BE = table.getValueAt(1, col);
                             Object HCO3 = table.getValueAt(2, col);
@@ -124,4 +150,9 @@ public class TabelAGasView {
     public void setOutlierMatrix(boolean[][] matrix) {
         this.outlierMatrix = matrix;
     }
+
+    public String getValgtDato() {
+        return valgtDato;
+    }
+
 }

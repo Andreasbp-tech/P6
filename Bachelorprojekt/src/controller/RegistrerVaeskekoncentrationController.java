@@ -1,22 +1,22 @@
 package controller;
 
 import model.NormalvaerdierModel;
-import model.RegistrerCitratmetabolismeModel;
-import view.RegistrerCitratmetabolismeView;
+import model.RegistrerVaeskekoncentrationModel;
+import view.RegistrerVaeskekoncentrationView;
 
-public class RegistrerCitratmetabolismeController {
-    private RegistrerCitratmetabolismeModel model;
-    private RegistrerCitratmetabolismeView view;
-    private TabelCitratmetabolismeController citratTabelCtrl;
+public class RegistrerVaeskekoncentrationController {
+    private RegistrerVaeskekoncentrationModel model;
+    private RegistrerVaeskekoncentrationView view;
+    private TabelVaeskekoncentrationController citratTabelCtrl;
     private NormalvaerdierModel normalvaerdierModel; // Added NormalvaerdierModel
 
     private String cprNr;
 
-    public RegistrerCitratmetabolismeController(
-            RegistrerCitratmetabolismeModel model,
-            RegistrerCitratmetabolismeView view,
+    public RegistrerVaeskekoncentrationController(
+            RegistrerVaeskekoncentrationModel model,
+            RegistrerVaeskekoncentrationView view,
             String cprNr,
-            TabelCitratmetabolismeController citratTabelCtrl,
+            TabelVaeskekoncentrationController citratTabelCtrl,
             NormalvaerdierModel normalvaerdierModel) {
         this.model = model;
         this.view = view;

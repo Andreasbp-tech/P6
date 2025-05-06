@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import utilities.DatabaseConnection;
 import java.sql.ResultSet;
 
-public class RegistrerCitratmetabolismeModel {
-    private static final Logger logger = Logger.getLogger(RegistrerCitratmetabolismeModel.class.getName());
+public class RegistrerVaeskekoncentrationModel {
+    private static final Logger logger = Logger.getLogger(RegistrerVaeskekoncentrationModel.class.getName());
 
     public void saveToDatabase(String cprNr, String calciumdosis, String citratdosis, String heparin) {
 

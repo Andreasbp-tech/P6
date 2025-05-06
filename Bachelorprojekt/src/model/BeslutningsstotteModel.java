@@ -1,11 +1,44 @@
 package model;
 
+import view.TabelAGasView;
+import utilities.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class BeslutningsstotteModel {
 
+    public static Double[] hentKreatininOgCarbamid(String cprNr, String dato) {
+        String query = "SELECT kreatinin, carbamid FROM Blodprøve WHERE CPR_nr = ? AND tidspunkt LIKE ?";
+        Double kreatinin = null;
+        Double carbamid = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, cprNr);
+            stmt.setString(2, dato + "%"); // f.eks. "2025-05-06%"
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                kreatinin = rs.getDouble("Kreatinin");
+                carbamid = rs.getDouble("Carbamid");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new Double[] { kreatinin, carbamid };
+    }
+
     public String analyserAcidBase(Object pH, Object BE, Object HCO3) {
+
         try {
             double pHVal = Double.parseDouble(pH.toString());
             if (pHVal < 7.35)
+
                 return "Acidose mistænkes – lav pH.";
             if (pHVal > 7.45)
                 return "Alkalose mistænkes – høj pH.";

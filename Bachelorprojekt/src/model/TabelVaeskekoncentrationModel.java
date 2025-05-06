@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.logging.Logger;
 import utilities.DatabaseConnection;
 
-public class TabelCitratmetabolismeModel {
+public class TabelVaeskekoncentrationModel {
     private List<String> timestamps;
     private List<String> dates;
     private Object[][] data;
-    private static final Logger logger = Logger.getLogger(TabelCitratmetabolismeModel.class.getName());
+    private static final Logger logger = Logger.getLogger(TabelVaeskekoncentrationModel.class.getName());
 
     public void fetchData(String cprNr) {
         timestamps = new ArrayList<>();
