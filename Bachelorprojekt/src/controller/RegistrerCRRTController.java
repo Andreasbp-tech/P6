@@ -14,7 +14,8 @@ public class RegistrerCRRTController {
     private String cprNr;
     private TabelCRRTController tabelController;
     private NormalvaerdierModel normalvaerdierModel;
-    private static final Logger logger = Logger.getLogger(RegistrerCRRTController.class.getName());
+    // private static final Logger logger =
+    // Logger.getLogger(RegistrerCRRTController.class.getName());
 
     public RegistrerCRRTController(RegistrerCRRTModel model,
             RegistrerCRRTView view,
@@ -77,7 +78,7 @@ public class RegistrerCRRTController {
                     cprNr, tid,
                     values[0], values[1], values[2],
                     values[3], values[4], values[5]);
-            logger.info("Data saved successfully for CPR: " + cprNr);
+            // logger.info("Data saved successfully for CPR: " + cprNr);
 
             // Opdater tabelvisning
             SwingUtilities.invokeLater(() -> {
@@ -89,7 +90,7 @@ public class RegistrerCRRTController {
             view.close();
 
         } catch (Exception ex) {
-            logger.severe("Error saving data: " + ex.getMessage());
+            // logger.severe("Error saving data: " + ex.getMessage());
             view.showError("En fejl opstod under gemning af data.");
         }
     }

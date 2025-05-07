@@ -64,7 +64,7 @@ public class TabelVaeskekoncentrationModel {
             rs.close();
             preparedStatement.close();
             conn.close();
-            logger.info("Citratmetabolisme data fetched for CPR: " + cprNr);
+            // logger.info("Citratmetabolisme data fetched for CPR: " + cprNr);
         } catch (Exception e) {
             logger.severe("Fejl ved hentning af citratmetabolisme-data: " + e.getMessage());
             e.printStackTrace();

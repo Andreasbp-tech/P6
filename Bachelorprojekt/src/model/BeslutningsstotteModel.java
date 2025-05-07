@@ -48,19 +48,44 @@ public class BeslutningsstotteModel {
             double[] carbamidRange = normalvaerdierModel.getRange("Carbamid");
             double[] hco3Range = normalvaerdierModel.getRange("HCO3");
             double[] pHRange = normalvaerdierModel.getRange("pH");
+            double[] HandlingMetaboliskAlkaloseHojKreatininCarbamidDialysatflowRange = normalvaerdierModel
+                    .getRange("HandlingMetaboliskAlkaloseHøjKreatininCarbamidDialysatflow");
+            double[] HandlingMetaboliskAlkaloseNormalKreatininCarbamidBlodflowRange = normalvaerdierModel
+                    .getRange("HandlingMetaboliskAlkaloseNormalKreatininCarbamidBlodflow");
+            double[] HandlingMetaboliskAcidoseHojKreatininCarbamidBlodflowRange = normalvaerdierModel
+                    .getRange("HandlingMetaboliskAcidoseHøjKreatininCarbamidBlodflow");
+            double[] HandlingMetaboliskAcidoseNormalKreatininCarbamidDialysatflowRange = normalvaerdierModel
+                    .getRange("HandlingMetaboliskAcidoseNormalKreatininCarbamidDialysatflow");
 
             boolean acidose = pHVal < pHRange[0] || hco3Val < hco3Range[0];
             boolean alkalose = pHVal > pHRange[1] || hco3Val > hco3Range[1];
             boolean nyresvigt = kreatininVal > kreatininRange[1] || carbamidVal > carbamidRange[1];
 
             if (acidose && !nyresvigt)
-                return "Acidose mistænkes – lav pH eller HCO₃, normal kreatinin og carbamid.\n➤ Reducer dialysatflow (500 ml/t)";
+                return "<html>Acidose mistænkes – lav pH eller HCO₃, normal kreatinin og carbamid.<br>"
+                        + "<font color='red'>➤ Reducer dialysatflow ("
+                        + HandlingMetaboliskAcidoseNormalKreatininCarbamidDialysatflowRange[0]
+                        + " ml/t)</font></html>";
+
             if (acidose && nyresvigt)
-                return "Acidose mistænkes – lav pH eller HCO₃, forhøjet kreatinin eller carbamid.\n➤ Øg blodflow (10-20 ml/min)";
+                return "<html>Acidose mistænkes – lav pH eller HCO₃, forhøjet kreatinin eller carbamid.<br>"
+                        + "<font color='red'>➤ Øg blodflow ("
+                        + HandlingMetaboliskAcidoseHojKreatininCarbamidBlodflowRange[0]
+                        + "-" + HandlingMetaboliskAcidoseHojKreatininCarbamidBlodflowRange[1]
+                        + " ml/min)</font></html>";
+
             if (alkalose && !nyresvigt)
-                return "Alkalose mistænkes – høj pH eller HCO₃, normal kreatinin og carbamid.\n➤ Reducer blodflow (10-20 ml/min)";
+                return "<html>Alkalose mistænkes – høj pH eller HCO₃, normal kreatinin og carbamid.<br>"
+                        + "<font color='red'>➤ Reducer blodflow ("
+                        + HandlingMetaboliskAlkaloseNormalKreatininCarbamidBlodflowRange[0]
+                        + "-" + HandlingMetaboliskAlkaloseNormalKreatininCarbamidBlodflowRange[1]
+                        + " ml/min)</font></html>";
+
             if (alkalose && nyresvigt)
-                return "Alkalose mistænkes – høj pH eller HCO₃, forhøjet kreatinin eller carbamid.\n➤ Øg dialysatflow (500 ml/t)";
+                return "<html>Alkalose mistænkes – høj pH eller HCO₃, forhøjet kreatinin eller carbamid.<br>"
+                        + "<font color='red'>➤ Øg dialysatflow ("
+                        + HandlingMetaboliskAlkaloseHojKreatininCarbamidDialysatflowRange[0]
+                        + " ml/t)</font></html>";
 
         } catch (Exception e) {
             return "Fejl i acid-base analyse.";
@@ -77,20 +102,18 @@ public class BeslutningsstotteModel {
             double[] systemiskCaLavRange = normalvaerdierModel.getRange("SystemiskCaLav");
             double[] systemiskCaRange = normalvaerdierModel.getRange("SystemiskCa");
             double[] systemiskCaHojRange = normalvaerdierModel.getRange("SystemiskCaHøj");
-            double[] postfilterCaLavRange = normalvaerdierModel.getRange("PostfilterCaLav");
-            double[] postfilterCaRange = normalvaerdierModel.getRange("PostfilterCa");
-            double[] postfilterCaHojRange = normalvaerdierModel.getRange("PostfilterCaHøj");
+            double[] CadosisaendringRange = normalvaerdierModel.getRange("CadosisÆndring");
 
             if (sysCa > systemiskCaRange[1]) {
-                sb.append("➤ Reducer Calciumdosis med 0,4 mmol/l og informer læge.\n");
+                sb.append("➤ Reducer Calciumdosis med " + CadosisaendringRange[1] + " mmol/l og informer læge.\n");
             } else if (sysCa >= systemiskCaHojRange[0] && sysCa <= systemiskCaHojRange[1]) {
-                sb.append("➤ Reducer Calciumdosis med 0,2 mmol/l.\n");
+                sb.append("➤ Reducer Calciumdosis med " + CadosisaendringRange[0] + " mmol/l.\n");
             } else if (sysCa >= systemiskCaRange[0] && sysCa <= systemiskCaRange[1]) {
                 sb.append("➤ Ingen ændring i Calciumdosis.\n");
             } else if (sysCa >= systemiskCaLavRange[0] && sysCa <= systemiskCaLavRange[1]) {
-                sb.append("➤ Øg Calciumdosis med 0,2 mmol/l.\n");
+                sb.append("➤ Øg Calciumdosis med " + CadosisaendringRange[0] + " mmol/l.\n");
             } else {
-                sb.append("➤ Øg Calciumdosis med 0,4 mmol/l og informer læge.\n");
+                sb.append("➤ Øg Calciumdosis med " + CadosisaendringRange[1] + " mmol/l og informer læge.\n");
             }
 
             return sb.toString();
@@ -103,17 +126,21 @@ public class BeslutningsstotteModel {
         try {
             double postCa = Double.parseDouble(postfilterCa.toString().replace(",", "."));
             StringBuilder sb = new StringBuilder();
+            double[] postfilterCaLavRange = normalvaerdierModel.getRange("PostfilterCaLav");
+            double[] postfilterCaRange = normalvaerdierModel.getRange("PostfilterCa");
+            double[] postfilterCaHojRange = normalvaerdierModel.getRange("PostfilterCaHøj");
+            double[] CitratdosisaendringRange = normalvaerdierModel.getRange("CitratdosisÆndring");
 
-            if (postCa > 0.4) {
-                sb.append("➤ Øg citratdosis med 0,2 mmol/l og informer læge.\n");
-            } else if (postCa >= 0.35 && postCa <= 0.4) {
-                sb.append("➤ Øg citratdosis med 0,1 mmol/l.\n");
-            } else if (postCa >= 0.25 && postCa < 0.35) {
+            if (postCa > postfilterCaHojRange[1]) {
+                sb.append("➤ Øg citratdosis med " + CitratdosisaendringRange[1] + " mmol/l og informer læge.\n");
+            } else if (postCa >= postfilterCaHojRange[0] && postCa <= postfilterCaHojRange[1]) {
+                sb.append("➤ Øg citratdosis med " + CitratdosisaendringRange[0] + " mmol/l.\n");
+            } else if (postCa >= postfilterCaRange[0] && postCa <= postfilterCaRange[1]) {
                 sb.append("➤ Ingen ændring i citratdosis.\n");
-            } else if (postCa >= 0.20 && postCa < 0.25) {
-                sb.append("➤ Reducer citratdosis med 0,1 mmol/l.\n");
+            } else if (postCa >= postfilterCaLavRange[0] && postCa < postfilterCaLavRange[1]) {
+                sb.append("➤ Reducer citratdosis med " + CitratdosisaendringRange[0] + " mmol/l.\n");
             } else {
-                sb.append("➤ Reducer citratdosis med 0,2 mmol/l og informer læge.\n");
+                sb.append("➤ Reducer citratdosis med " + CitratdosisaendringRange[1] + " mmol/l og informer læge.\n");
             }
 
             return sb.toString();

@@ -47,13 +47,11 @@ public class TabelAGasController {
                         String[] dateParts = rawDate.split("-");
                         if (dateParts.length == 3) {
                             valgtDato = "20" + dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
-                            System.out.println("Dato: " + valgtDato);
                         }
                     }
 
                     // Hent CPR-nummer fra ValgStueModel
                     cprNr = valgStueModel.getCprNr(); // CPR-nummeret er nu gemt i cprNr
-                    System.out.println("CPR: " + cprNr);
 
                     // Hent kreatinin og carbamid fra databasen
                     Double[] resultater = BeslutningsstotteModel.hentKreatininOgCarbamid(cprNr, valgtDato);
@@ -77,30 +75,38 @@ public class TabelAGasController {
             }
 
             private void showAcidBaseDialog(Object pH, Object BE, Object HCO3, Double kreatinin, Double carbamid) {
-                // Brug kreatinin og carbamid i analysen (hvis nødvendigt)
                 String interpretation = beslutningsstotteModel.analyserAcidBase(pH, BE, HCO3, kreatinin, carbamid);
-                JOptionPane.showMessageDialog(view.getTable(),
-                        "Syre-base uregelmæssighed:\n\npH: " + value(pH) + "\nBE: " + value(BE) + "\nHCO₃⁻: "
-                                + value(HCO3)
-                                + "\nKreatinin: " + value(kreatinin) + "\nCarbamid: " + value(carbamid)
-                                + "\n\n" + interpretation,
-                        "Syre-base evaluering", JOptionPane.WARNING_MESSAGE);
-            }
 
-            private void showSystemiskCaDialog(Object ca) {
-                String result = beslutningsstotteModel.analyserSystemiskCa(ca);
-                JOptionPane.showMessageDialog(view.getTable(),
-                        "<html><b>Systemisk Ca:</b> " + value(ca) + " mmol/l<br><br><font color='red'>"
-                                + result.replace("\n", "<br>") + "</font></html>",
-                        "Systemisk Calcium", JOptionPane.WARNING_MESSAGE);
+                String message = "<html>"
+                        + "Syre-base uregelmæssighed:<br><br>"
+                        + "pH: " + value(pH) + "<br>"
+                        + "BE: " + value(BE) + "<br>"
+                        + "HCO₃⁻: " + value(HCO3) + "<br>"
+                        + "Kreatinin: " + value(kreatinin) + "<br>"
+                        + "Carbamid: " + value(carbamid) + "<br><br>"
+                        + "<b>Beslutningsstøtte:</b><br>"
+                        + interpretation;
+
+                JOptionPane.showMessageDialog(view.getTable(), message, "Beslutningsstøtte",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             private void showPostCaDialog(Object ca) {
                 String result = beslutningsstotteModel.analyserPostfilterCa(ca);
                 JOptionPane.showMessageDialog(view.getTable(),
-                        "<html><b>Postfilter Ca:</b> " + value(ca) + " mmol/l<br><br><font color='red'>"
-                                + result.replace("\n", "<br>") + "</font></html>",
-                        "Postfilter Calcium", JOptionPane.WARNING_MESSAGE);
+                        "<html><b>Postfilter Calcium:</b> " + value(ca) + " mmol/l<br><br>"
+                                + "<b>Beslutningsstøtte:</b><br>"
+                                + "<font color='red'>" + result.replace("\n", "<br>") + "</font></html>",
+                        "Beslutningsstøtte", JOptionPane.WARNING_MESSAGE);
+            }
+
+            private void showSystemiskCaDialog(Object ca) {
+                String result = beslutningsstotteModel.analyserSystemiskCa(ca);
+                JOptionPane.showMessageDialog(view.getTable(),
+                        "<html><b>Systemisk Calcium:</b> " + value(ca) + " mmol/l<br><br>"
+                                + "<b>Beslutningsstøtte:</b><br>"
+                                + "<font color='red'>" + result.replace("\n", "<br>") + "</font></html>",
+                        "Beslutningsstøtte", JOptionPane.WARNING_MESSAGE);
             }
 
             private String value(Object o) {

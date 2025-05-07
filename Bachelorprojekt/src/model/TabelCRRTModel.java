@@ -66,7 +66,7 @@ public class TabelCRRTModel {
             statement.close();
             conn.close();
 
-            logger.info("Data fetched successfully for CPR: " + cprNr);
+            // logger.info("Data fetched successfully for CPR: " + cprNr);
         } catch (Exception e) {
             logger.severe("Error fetching data: " + e.getMessage());
             e.printStackTrace();

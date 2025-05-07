@@ -10,7 +10,8 @@ import view.TabelVaeskekoncentrationView;
 public class TabelVaeskekoncentrationController {
     private TabelVaeskekoncentrationModel model;
     private TabelVaeskekoncentrationView view;
-    private static final Logger logger = Logger.getLogger(TabelVaeskekoncentrationController.class.getName());
+    // private static final Logger logger =
+    // Logger.getLogger(TabelVaeskekoncentrationController.class.getName());
 
     public TabelVaeskekoncentrationController(TabelVaeskekoncentrationModel model, TabelVaeskekoncentrationView view) {
         this.model = model;
@@ -22,7 +23,7 @@ public class TabelVaeskekoncentrationController {
     }
 
     public void updateView(String cprNr) {
-        logger.info("Opdaterer citratmetabolisme-tabel for CPR: " + cprNr);
+        // logger.info("Opdaterer citratmetabolisme-tabel for CPR: " + cprNr);
         model.fetchData(cprNr);
 
         // 1) Analyse for outliers

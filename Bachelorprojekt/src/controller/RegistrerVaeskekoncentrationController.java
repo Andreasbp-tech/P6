@@ -55,16 +55,22 @@ public class RegistrerVaeskekoncentrationController {
 
             // Tjek for afvigelser ift. tidligere måling (calcium og citrat)
             double[] latest = model.getLatestValues(cprNr);
+            double[] CadosisAendringRange = normalvaerdierModel.getRange("CadosisÆndring");
+            double[] CitratdosisAendringRange = normalvaerdierModel.getRange("CitratdosisÆndring");
+
             if (latest != null) {
                 double currentCalcium = Double.parseDouble(values[0]);
                 double currentCitrat = Double.parseDouble(values[1]);
 
-                if (Math.abs(currentCalcium - latest[0]) >= 0.4) {
-                    warningMessage.append("Calciumdosis afviger med 0,4 eller mere fra seneste måling.\n");
+                if (Math.abs(currentCalcium - latest[0]) >= CadosisAendringRange[1]) {
+                    warningMessage.append(
+                            "Calciumdosis afviger med " + CadosisAendringRange[1]
+                                    + " eller mere fra seneste måling.\n");
                     requiresDoctorNotification = true;
                 }
-                if (Math.abs(currentCitrat - latest[1]) >= 0.2) {
-                    warningMessage.append("Citratdosis afviger med 0,2 eller mere fra seneste måling.\n");
+                if (Math.abs(currentCitrat - latest[1]) >= CitratdosisAendringRange[1]) {
+                    warningMessage.append("Citratdosis afviger med " + CitratdosisAendringRange[1]
+                            + " eller mere fra seneste måling.\n");
                     requiresDoctorNotification = true;
                 }
             }

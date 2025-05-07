@@ -10,7 +10,8 @@ import model.NormalvaerdierModel;
 public class TabelCRRTController {
     private TabelCRRTModel model;
     private TabelCRRTView view;
-    private static final Logger logger = Logger.getLogger(TabelCRRTController.class.getName());
+    // private static final Logger logger =
+    // Logger.getLogger(TabelCRRTController.class.getName());
 
     public TabelCRRTController(TabelCRRTModel model, TabelCRRTView view) {
         this.model = model;
@@ -22,7 +23,7 @@ public class TabelCRRTController {
     }
 
     public void updateView(String cprNr) {
-        logger.info("Updating view with CPR: " + cprNr);
+        // logger.info("Updating view with CPR: " + cprNr);
         model.fetchData(cprNr);
 
         // Tjek for normalværdier
@@ -45,7 +46,7 @@ public class TabelCRRTController {
         // Tilføj data rækker
         for (Object[] row : model.getData()) {
             tableModel.addRow(row);
-            logger.info("Added row: " + java.util.Arrays.toString(row));
+            // logger.info("Added row: " + java.util.Arrays.toString(row));
         }
 
         // Juster første kolonne
