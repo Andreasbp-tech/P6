@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import utilities.ProgramIcon;
 
 public class TabelAGasView {
     private JPanel tablePanel;

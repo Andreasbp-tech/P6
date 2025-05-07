@@ -11,6 +11,7 @@ public class AuthenticationView {
     private JButton loginButton;
 
     public AuthenticationView() {
+
         frame = new JFrame("Login");
         medarbejderIDField = new JTextField(16);
         medarbejderIDField.setPreferredSize(new Dimension(200, 30)); // Set preferred size
@@ -41,7 +42,6 @@ public class AuthenticationView {
         frame.setSize(600, 300); // Set a larger size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
-
         ProgramIcon.setIconToWindow(frame); // Set icon to the window
 
     }

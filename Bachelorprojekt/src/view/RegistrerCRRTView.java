@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+import utilities.ProgramIcon;
 
 public class RegistrerCRRTView {
     private JFrame frame;
@@ -54,6 +55,9 @@ public class RegistrerCRRTView {
             JLabel unitLabel = new JLabel(units[i]);
             unitLabel.setFont(new Font("Arial", Font.PLAIN, 18));
             panel.add(unitLabel, gbc);
+
+            ProgramIcon.setIconToWindow(frame); // Set icon to the window
+
         }
 
         saveButton = new JButton("Gem");

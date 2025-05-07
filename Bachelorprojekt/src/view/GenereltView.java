@@ -112,6 +112,7 @@ public class GenereltView {
         centerContainer.add(actionPanel, BorderLayout.NORTH);
         centerContainer.add(tablesContainer, BorderLayout.CENTER);
         panel.add(centerContainer, BorderLayout.CENTER);
+
     }
 
     public JPanel getPanel() {

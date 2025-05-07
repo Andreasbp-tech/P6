@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import utilities.ProgramIcon;
 
 public class TabelVaeskekoncentrationView {
     private JPanel tablePanel;
@@ -49,6 +50,7 @@ public class TabelVaeskekoncentrationView {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tablePanel.add(scroll, BorderLayout.CENTER);
+
     }
 
     public JPanel getTablePanel() {

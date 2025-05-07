@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import javax.swing.*;
 import utilities.HeaderPanelUtil;
+import utilities.ProgramIcon;
 
 public class ValgStueView {
     private JFrame frame;
@@ -23,6 +24,9 @@ public class ValgStueView {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to fill the screen
         frame.setUndecorated(false); // Remove window decorations (title bar, borders, etc.)
         frame.setLocationRelativeTo(null); // Center the frame on the screen
+
+        ProgramIcon.setIconToWindow(frame); // Set icon to the window
+
     }
 
     public void addButton(JButton button) {

@@ -3,6 +3,8 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import model.ValgStueModel;
+import utilities.ProgramIcon;
+import utilities.ProgramIcon;
 
 public class ProvesvarView {
     private JPanel mainPanel;

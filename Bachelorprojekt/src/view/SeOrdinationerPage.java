@@ -2,12 +2,15 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import utilities.ProgramIcon;
 
 public class SeOrdinationerPage {
 
     public static void launch() {
         JFrame frame = new JFrame("Se Ordinationer");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        ProgramIcon.setIconToWindow(frame); // Set icon to the window
 
         // Set the size to half the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import utilities.ProgramIcon;
 
 public class ParameterPopupView {
     private JFrame frame;
@@ -12,6 +13,7 @@ public class ParameterPopupView {
     private JButton cancelButton;
 
     public ParameterPopupView() {
+
         frame = new JFrame("Nyt parametre");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 200);
@@ -47,6 +49,8 @@ public class ParameterPopupView {
         panel.add(Box.createVerticalStrut(5));
 
         frame.add(panel);
+        ProgramIcon.setIconToWindow(frame); // Set icon to the window
+
     }
 
     public void setVisible(boolean visible) {
