@@ -25,7 +25,7 @@ public class ParameterPopupView {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
-        crrtButton = new JButton("CRRT");
+        crrtButton = new JButton("CRRT-indstillinger");
         crrtButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         crrtButton.setMaximumSize(new Dimension(175, crrtButton.getMinimumSize().height));
 
