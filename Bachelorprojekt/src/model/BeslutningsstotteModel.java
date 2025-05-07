@@ -74,13 +74,20 @@ public class BeslutningsstotteModel {
             double sysCa = Double.parseDouble(systemiskCa.toString().replace(",", "."));
             StringBuilder sb = new StringBuilder();
 
-            if (sysCa > 1.35) {
+            double[] systemiskCaLavRange = normalvaerdierModel.getRange("SystemiskCaLav");
+            double[] systemiskCaRange = normalvaerdierModel.getRange("SystemiskCa");
+            double[] systemiskCaHojRange = normalvaerdierModel.getRange("SystemiskCaHøj");
+            double[] postfilterCaLavRange = normalvaerdierModel.getRange("PostfilterCaLav");
+            double[] postfilterCaRange = normalvaerdierModel.getRange("PostfilterCa");
+            double[] postfilterCaHojRange = normalvaerdierModel.getRange("PostfilterCaHøj");
+
+            if (sysCa > systemiskCaRange[1]) {
                 sb.append("➤ Reducer Calciumdosis med 0,4 mmol/l og informer læge.\n");
-            } else if (sysCa >= 1.21 && sysCa <= 1.35) {
+            } else if (sysCa >= systemiskCaHojRange[0] && sysCa <= systemiskCaHojRange[1]) {
                 sb.append("➤ Reducer Calciumdosis med 0,2 mmol/l.\n");
-            } else if (sysCa >= 1.12 && sysCa <= 1.20) {
+            } else if (sysCa >= systemiskCaRange[0] && sysCa <= systemiskCaRange[1]) {
                 sb.append("➤ Ingen ændring i Calciumdosis.\n");
-            } else if (sysCa >= 1.00 && sysCa <= 1.11) {
+            } else if (sysCa >= systemiskCaLavRange[0] && sysCa <= systemiskCaLavRange[1]) {
                 sb.append("➤ Øg Calciumdosis med 0,2 mmol/l.\n");
             } else {
                 sb.append("➤ Øg Calciumdosis med 0,4 mmol/l og informer læge.\n");
