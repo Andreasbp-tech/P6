@@ -120,15 +120,16 @@ public class RegistrerVaeskekoncentrationView {
     }
 
     // metode til at vise en bekræftelsesdialog
-    public int showConfirmDialog(String message, String title, String[] options) {
+    public int showConfirmDialog(String message, String title, String[] options, int messageType) {
         return JOptionPane.showOptionDialog(
                 frame,
                 message,
                 title,
                 JOptionPane.DEFAULT_OPTION,
-                JOptionPane.WARNING_MESSAGE,
+                messageType, // ← nu kan du styre ikonen!
                 null,
                 options,
                 options[0]);
     }
+
 }

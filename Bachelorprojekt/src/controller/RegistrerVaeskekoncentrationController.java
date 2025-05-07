@@ -1,5 +1,7 @@
 package controller;
 
+import javax.swing.JOptionPane;
+
 import model.NormalvaerdierModel;
 import model.RegistrerVaeskekoncentrationModel;
 import view.RegistrerVaeskekoncentrationView;
@@ -82,7 +84,7 @@ public class RegistrerVaeskekoncentrationController {
             // Hvis der er nogen advarsler, vis samlet popup
             if (warningMessage.length() > 0) {
                 int choice = view.showConfirmDialog(warningMessage.toString(), "Beslutningsstøtte",
-                        new String[] { "Ændre", "Gem alligevel" });
+                        new String[] { "Ændre", "Gem alligevel" }, JOptionPane.WARNING_MESSAGE);
                 if (choice == 0) {
                     return; // Brugeren vil ændre værdierne
                 }
@@ -90,6 +92,9 @@ public class RegistrerVaeskekoncentrationController {
 
             // Gem data
             model.saveToDatabase(cprNr, values[0], values[1], values[2]);
+            view.showConfirmDialog("Data er gemt korrekt.", "Bekræftelse", new String[] { "OK" },
+                    JOptionPane.INFORMATION_MESSAGE);
+
             citratTabelCtrl.updateView(cprNr);
             view.close();
 

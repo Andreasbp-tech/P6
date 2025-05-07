@@ -3,6 +3,8 @@ package controller;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import model.NormalvaerdierModel;
 import model.RegistrerCRRTModel;
@@ -65,7 +67,7 @@ public class RegistrerCRRTController {
                 int choice = view.showConfirmDialog(
                         warning.toString(),
                         "Beslutningsstøtte",
-                        new String[] { "Ændre", "Gem alligevel" });
+                        new String[] { "Ændre", "Gem alligevel" }, JOptionPane.WARNING_MESSAGE);
                 if (choice == 0) {
                     return; // Brugeren vil ændre værdierne
                 }
@@ -79,6 +81,9 @@ public class RegistrerCRRTController {
                     values[0], values[1], values[2],
                     values[3], values[4], values[5]);
             // logger.info("Data saved successfully for CPR: " + cprNr);
+
+            view.showConfirmDialog("Data er gemt korrekt.", "Bekræftelse", new String[] { "OK" },
+                    JOptionPane.INFORMATION_MESSAGE);
 
             // Opdater tabelvisning
             SwingUtilities.invokeLater(() -> {
