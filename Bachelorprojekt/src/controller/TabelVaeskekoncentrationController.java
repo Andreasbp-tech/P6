@@ -3,9 +3,8 @@ package controller;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
-import model.TabelVaeskekoncentrationModel;
 import model.NormalvaerdierModel;
+import model.TabelVaeskekoncentrationModel;
 import view.TabelVaeskekoncentrationView;
 
 public class TabelVaeskekoncentrationController {

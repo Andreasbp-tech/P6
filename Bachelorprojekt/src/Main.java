@@ -1,7 +1,7 @@
-import model.MedarbejderModel;
-import view.AuthenticationView;
 import controller.AuthenticationController;
+import model.MedarbejderModel;
 import utilities.DatabaseConnection;
+import view.AuthenticationView;
 
 public class Main {
     public static void main(String[] args) {

@@ -20,7 +20,7 @@ public class GenereltView {
     private JButton seOrdinationerButton;
 
     private TabelCRRTController tabelCRRTController;
-    private TabelVaeskekoncentrationController tabelCitratmetabolismeController;
+    private TabelVaeskekoncentrationController tabelVaeskekoncentrationController;
 
     public GenereltView(int valgtStue, ValgStueModel model) {
         model.getPatientData(valgtStue);
@@ -86,8 +86,8 @@ public class GenereltView {
         citratSection.add(citratLabel, BorderLayout.NORTH);
         TabelVaeskekoncentrationModel citratModel = new TabelVaeskekoncentrationModel();
         TabelVaeskekoncentrationView citratView = new TabelVaeskekoncentrationView();
-        this.tabelCitratmetabolismeController = new TabelVaeskekoncentrationController(citratModel, citratView);
-        this.tabelCitratmetabolismeController.updateView(model.getCprNr());
+        this.tabelVaeskekoncentrationController = new TabelVaeskekoncentrationController(citratModel, citratView);
+        this.tabelVaeskekoncentrationController.updateView(model.getCprNr());
         JPanel citratTablePanel = citratView.getTablePanel();
         citratTablePanel.setPreferredSize(new Dimension(screenWidth, (int) (screenHeight * 0.25)));
         citratSection.add(citratTablePanel, BorderLayout.CENTER);
@@ -134,7 +134,7 @@ public class GenereltView {
         return tabelCRRTController;
     }
 
-    public TabelVaeskekoncentrationController getTabelCitratmetabolismeController() {
-        return tabelCitratmetabolismeController;
+    public TabelVaeskekoncentrationController getTabelVaeskekoncentrationController() {
+        return tabelVaeskekoncentrationController;
     }
 }

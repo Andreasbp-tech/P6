@@ -5,10 +5,7 @@ import javax.swing.SwingUtilities;
 import model.ValgStueModel;
 import view.GenereltView;
 import view.ParameterPopupView;
-import controller.ParameterPopupController;
-import controller.TabelCRRTController;
 import view.ValgStueView;
-import controller.ValgStueController;
 
 public class GenereltController {
     private GenereltView view;
@@ -38,7 +35,7 @@ public class GenereltController {
 
             ParameterPopupView popupView = new ParameterPopupView();
             TabelCRRTController tcCtrl = view.getTabelCRRTController();
-            TabelVaeskekoncentrationController citratCtrl = view.getTabelCitratmetabolismeController();
+            TabelVaeskekoncentrationController citratCtrl = view.getTabelVaeskekoncentrationController();
             ParameterPopupController popupCtrl = new ParameterPopupController(popupView, model, tcCtrl, citratCtrl);
             popupCtrl.showView();
         });
