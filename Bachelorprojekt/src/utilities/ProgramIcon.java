@@ -7,7 +7,7 @@ public class ProgramIcon {
 
     // Metode til at oprette og returnere et ImageIcon
     public static ImageIcon getProgramIcon() {
-        ImageIcon icon = new ImageIcon("src/utilities/program_icon.png");
+        ImageIcon icon = new ImageIcon("src/utilities/logo_ICUview.png");
         return icon;
     }
 

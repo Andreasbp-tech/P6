@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import utilities.ProgramIcon;
 
 public class AuthenticationView {
     private JFrame frame;
@@ -40,6 +41,9 @@ public class AuthenticationView {
         frame.setSize(600, 300); // Set a larger size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
+
+        ProgramIcon.setIconToWindow(frame); // Set icon to the window
+
     }
 
     public void show() {
