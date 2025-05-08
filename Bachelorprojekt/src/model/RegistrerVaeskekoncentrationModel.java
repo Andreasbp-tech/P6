@@ -2,11 +2,11 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 import utilities.DatabaseConnection;
-import java.sql.ResultSet;
 
 public class RegistrerVaeskekoncentrationModel {
     private static final Logger logger = Logger.getLogger(RegistrerVaeskekoncentrationModel.class.getName());
@@ -16,7 +16,7 @@ public class RegistrerVaeskekoncentrationModel {
         try {
             Connection conn = DatabaseConnection.getConnection();
 
-            String query = "INSERT INTO Citratmetabolisme (CPR_nr, tidspunkt, calciumdosis, citratdosis, heparin) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Væskekoncentration (CPR_nr, tidspunkt, calciumdosis, citratdosis, heparin) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(query);
 
             String tidspunkt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

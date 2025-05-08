@@ -22,7 +22,7 @@ public class TabelVaeskekoncentrationModel {
         try {
             Connection conn = DatabaseConnection.getConnection();
 
-            String query = "SELECT * FROM Citratmetabolisme WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 18";
+            String query = "SELECT * FROM Væskekoncentration WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 18";
             PreparedStatement preparedStatement = conn.prepareStatement(
                     query,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
