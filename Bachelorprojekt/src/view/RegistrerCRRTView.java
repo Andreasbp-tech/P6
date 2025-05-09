@@ -32,7 +32,7 @@ public class RegistrerCRRTView {
 
         String[] labels = { "Dialysatflow:", "Blodflow:", "Væsketræk:", "Indløbstryk:", "Returtryk:",
                 "Præfiltertryk:" };
-        String[] units = { "ml/time", "ml/time", "ml/time", "mmHg", "mmHg", "mmHg" };
+        String[] units = { "ml/time", "ml/min", "ml/time", "mmHg", "mmHg", "mmHg" };
 
         textFields = new JTextField[labels.length];
 
