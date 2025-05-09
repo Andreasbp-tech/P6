@@ -1,7 +1,5 @@
 package model;
 
-import utilities.DatabaseConnection;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -10,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import utilities.DatabaseConnection;
 
 public class TabelBlodproveModel {
     private List<String> timestamps;
@@ -24,7 +23,7 @@ public class TabelBlodproveModel {
 
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String query = "SELECT * FROM Blodprøve WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 18";
+            String query = "SELECT * FROM Blodprøve WHERE CPR_nr = '" + cprNr + "' ORDER BY tidspunkt DESC LIMIT 7";
             ResultSet rs = stmt.executeQuery(query);
 
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

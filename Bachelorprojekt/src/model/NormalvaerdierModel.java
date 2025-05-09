@@ -3,12 +3,11 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import utilities.DatabaseConnection;
-import model.ValgStueModel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NormalvaerdierModel {
     private Map<String, double[]> ranges;
@@ -49,6 +48,10 @@ public class NormalvaerdierModel {
         double[] range = ranges.get(parameterName);
         if (range == null) {
             throw new IllegalArgumentException("Ukendt parameter: " + parameterName);
+        }
+        else if (parameterName.equalsIgnoreCase("Heparin")) {
+            // Heparin er uden for normalområdet, hvis det er 0 eller 500
+            return value == 0 || value == range[1];
         }
         return value >= range[0] && value <= range[1];
     }

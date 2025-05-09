@@ -41,7 +41,7 @@ public class RegistrerVaeskekoncentrationModel {
     public double[] getLatestValues(String cprNr) {
         double[] latestValues = null;
 
-        String query = "SELECT calciumdosis, citratdosis FROM Citratmetabolisme WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 1";
+        String query = "SELECT calciumdosis, citratdosis FROM Væskekoncentration WHERE CPR_nr = ? ORDER BY tidspunkt DESC LIMIT 1";
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
