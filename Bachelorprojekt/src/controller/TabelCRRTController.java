@@ -57,12 +57,6 @@ public class TabelCRRTController {
 
         view.getTable().revalidate();
         view.getTable().repaint();
-
-        // Udskriv outliers i konsollen
-        String[] parameterNames = new String[model.getData().length];
-        for (int i = 0; i < model.getData().length; i++) {
-            parameterNames[i] = model.getData()[i][0].toString();
-        }
     }
 
 }
