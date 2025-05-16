@@ -2,7 +2,7 @@
 
 ##  Overblik
 
-**P6** er det afsluttende projekt for vores bachelor uddannelse. Projektert fokuserer på udvikling af et software system med integreret dokumentation og kvalitetledelse. GitHub siden her inkluderer vores soruce code og projektdokumentation fra tests i QMS.
+**P6** er det afsluttende projekt for vores bacheloruddannelse. Projektet fokuserer på udvikling af et softwaresystem med integreret dokumentation og kvalitetledelse. GitHub siden her inkluderer vores source code og projektdokumentation fra tests i QMS.
 
 ##  Funktioner
 
