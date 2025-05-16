@@ -6,10 +6,10 @@
 
 ##  Features
 
-- ✅ Java-based Swing application with MVC architecture
-- ✅ Decision support logic for clinical parameters
-- ✅ Modular structure with clean separation of concerns
-- ✅ Quality Management System (QMS) materials
+-  Java-based Swing application with MVC architecture
+-  Decision support logic for clinical parameters
+-  Modular structure with clean separation of concerns
+-  Quality Management System (QMS) materials
 
 ## Getting Started
 
