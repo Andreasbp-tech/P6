@@ -4,14 +4,13 @@
 
 **P6** er det afsluttende projekt for vores bachelor uddannelse. Projektert fokuserer på udvikling af et software system med integreret dokumentation og kvalitetledelse. GitHub siden her inkluderer vores soruce code og projektdokumentation fra tests i QMS.
 
-##  Features
+##  Funktioner
 
--  Java-based Swing application with MVC architecture
--  Decision support logic for clinical parameters
--  Modular structure with clean separation of concerns
--  Quality Management System (QMS) materials
+- Java-baseret Swing-applikation med MVC-arkitektur  
+- Beslutningsstøttelogik til kliniske parametre  
+- Modulær struktur med klar adskillelse af funktioner  
+- Materiale tilknyttet et kvalitetsstyringssystem (QMS)  
 
-## Getting Started
 
 ### Forudsætninger
 
