@@ -1,23 +1,21 @@
 # P6 – Bachelorprojekt
 
-## 📘 Overview
+##  Overblik
 
-**P6** is the final project for our Bachelor's degree. The project focuses on the development of a software system with integrated documentation and quality management. It includes source code, project documentation, and tools to support decision-making and clinical workflows (e.g., CRRT and citrate metabolism support).
+**P6** er det afsluttende projekt for vores bachelor uddannelse. Projektert fokuserer på udvikling af et software system med integreret dokumentation og kvalitetledelse. GitHub siden her inkluderer vores soruce code og projektdokumentation fra tests i QMS.
 
-## 🛠️ Features
+##  Features
 
 - ✅ Java-based Swing application with MVC architecture
 - ✅ Decision support logic for clinical parameters
 - ✅ Modular structure with clean separation of concerns
-- ✅ Full documentation for academic and professional review
 - ✅ Quality Management System (QMS) materials
 
-## 🚀 Getting Started
+## Getting Started
 
-### Prerequisites
+### Forudsætninger
 
-Make sure you have the following installed:
-
+Der kræves at du har følgende installeret: 
 - Java 17+
 - Maven or Gradle
 - Git
