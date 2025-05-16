@@ -12,7 +12,7 @@
 - Materiale tilknyttet et kvalitetsstyringssystem (QMS)  
 
 
-### Forudsætninger
+## Forudsætninger
 
 Der kræves at du har følgende installeret: 
 - Java 17+
