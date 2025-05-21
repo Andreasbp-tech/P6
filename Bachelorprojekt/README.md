@@ -1,18 +1,26 @@
-## Getting Started
+# P6 – Bachelorprojekt
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+##  Overblik
 
-## Folder Structure
+**P6** er det afsluttende projekt for bacheloruddannelsen Sundhedsteknologi. Projektet fokuserer på udvikling af et softwaresystem med integreret dokumentation og kvalitetledelse. GitHub siden her inkluderer vores source code og projektdokumentation fra tests i QMS.
 
-The workspace contains two folders by default, where:
+##  Funktioner
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- Java-baseret Swing-applikation med MVC-arkitektur  
+- Beslutningsstøttelogik til kliniske parametre  
+- Modulær struktur med klar adskillelse af funktioner  
+- Materiale tilknyttet et kvalitetsstyringssystem (QMS)  
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Forudsætninger
 
-## Dependency Management
+Der kræves at du har følgende installeret: 
+- Java 17+
+- Maven or Gradle
+- Git
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+### Clone the Repository
+
+```bash
+git clone https://github.com/Andreasbp-tech/P6.git
+cd P6
