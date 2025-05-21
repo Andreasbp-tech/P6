@@ -11,10 +11,10 @@
 - Modulær struktur med klar adskillelse af funktioner  
 - Materiale tilknyttet et kvalitetsstyringssystem (QMS)
 
-  ## Tilgang til QMS
-  - Tryk på den grønne knap "<>Code"
-  - Tryk på "Download Zip"
-  - Alternativt tilgå filen i GitHub online og tryk på "View raw" så downloades det enkelte dokument
+## Tilgang til QMS
+- Tryk på den grønne knap "<>Code"
+- Tryk på "Download Zip"
+- Alternativt tilgå filen i GitHub online og tryk på "View raw" så downloades det enkelte dokument
     
 
 ## Forudsætninger
